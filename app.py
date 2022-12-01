@@ -11,9 +11,7 @@ db = SQL("sqlite:///liftit.db")
 
 @app.route("/")
 def home():
-    test = db_test.execute("SELECT * FROM Track")
-    loop_by = len(test)
-    return render_template("home.html", test=test, loop_by=loop_by)
+    return render_template("home.html")
 
 @app.route("/browse")
 def browse():
@@ -39,3 +37,26 @@ def browse():
         return render_template("browse.html", muscle=muscle, equipment=equipment, category_to_display=category_to_display)
 
     return render_template("browse.html", muscle=muscle, equipment=equipment)
+
+@app.route("/add", methods=["GET","POST"])
+def add():
+
+    if request.method == "POST":
+        # Obtain exercises
+        store_name = request.form.get("name_store")
+        store_muscle = request.form.get("muscle_store")
+        store_equip = request.form.get("equip_store")
+
+        # If not all fields are filled in
+        if None in (store_name, store_muscle, store_equip):
+            # TO.DO create error.html template
+            return render_template("home.html")
+
+        # Update database with new exercise
+        db.execute("INSERT INTO exercises (exercise, muscle, equipment) VALUES (?, ?, ?)", store_name, store_muscle, store_equip)
+
+        return render_template("home.html")
+
+    return render_template("add.html")
+
+    
