@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    workout_plan
+{% endblock %}
+
+{% block main %}
+<!-- create workout -->
+<form action="/workout_plan" method="post">
+    <input autocomplete="off" autofocus name="wk_name" placeholder="Name your workout" type="text">
+    <input type="submit">
+</form>
+
+<!-- select from created workouts -->
+<form action="/workout_plan" method="post">
+    <label for="wk_plan">Workout Plan</label>
+    <select name="wk_plan">
+        {% for i in user_workouts %}
+        <option value="{{i['wk_name']}}">{{i['wk_name']}}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Submit" />
+</form>
+
+<!-- allow user to add exercise to their workout 
+ - bring up selection + filter options for exercises for user, have this appear when a option is clicked
+ - feature to add chosen exercise to the workout_details table (the code for the add exercise feature may be re-usable here)
+ - present the workouts the user has chosen, either on same page or maybe make a new page
+ - provide option for user to remove exercise from table
+-->
+{% endblock %}
