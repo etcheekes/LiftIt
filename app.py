@@ -77,7 +77,7 @@ def login():
 @login_required
 def browse():
 
-    # obtain distinc categories 
+    # obtain distinct categories 
     muscle = db.execute("SELECT DISTINCT muscle FROM exercises")
     equipment = db.execute("SELECT DISTINCT equipment FROM exercises")
     
@@ -121,6 +121,22 @@ def add():
         return render_template("home.html")
 
     return render_template("add.html")
+
+@app.route("/workout_plan", methods=["POST", "GET"])
+@login_required
+def workout_plan():
+
+    if request.method == "POST":
+
+        # get name of workout
+        wk_name = request.form.get("wk_name")
+
+        # enter workout into users_wk_name table
+        db.execute("INSERT INTO users_wk_name (user, wk_name) VALUES (?, ?)", session["user_id"], wk_name)
+
+    user_workouts = db.execute("SELECT wk_name FROM users_wk_name WHERE user = ?", session["user_id"])
+
+    return render_template("workout_plan.html", user_workouts=user_workouts)
 
 @app.route("/register", methods=["POST", "GET"])
 def register():
