@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    view - workout - plans
+{% endblock %}
+
+{% block main %}
+        <form action="/view_plan" method="post">
+            <select name="wk_plan">
+                {% for i in user_workouts %}
+                <option value="{{i['wk_name']}}">{{i['wk_name']}}</option>
+                {% endfor %}
+                <input type="submit" value="Submit"/>
+            </select>
+        </form>
+        <h2>Donkey</h2>
+            <table class="center">
+                <thead>
+                    <tr>
+                        <th>Exercise</th>
+                        <th>Muscle</th>
+                        <th>Equipment</th>
+                        <th>reps</th>
+                        <th>Weight</th>
+                    </tr>
+                </thead>
+                {% for i in users_wks%}
+                <tbody>
+                    
+                    <tr>
+                        <td>{{i['exercise']}}</td>
+                        <td>{{i['muscle']}}</td>
+                        <td>{{i['equipment']}}</td>
+                        <td>{{i['reps']}}</td>
+                        <td>{{i['weight'] + ' ' + i['measurement']}}</td>
+                    </tr>
+                </tbody>
+                {% endfor %}
+            </table>
+
+        {{users_wks}}
+    
+
+{% endblock %}
