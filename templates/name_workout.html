@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Name your workout
+{% endblock %}
+
+{% block main %}
+<form action="/name_workout" method="post">
+    <input autocomplete="off" autofocus name="wk_name" placeholder="Name your workout" type="text">
+    <input type="submit">
+</form>
+{% endblock %}

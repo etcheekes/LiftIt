@@ -128,12 +128,6 @@ def workout_plan():
 
     if request.method == "POST":
 
-        # get name of workout
-        if "wk_name" in request.form:
-            wk_name = request.form.get("wk_name")
-            db.execute("INSERT INTO users_wk_name (user, wk_name) VALUES (?, ?)", session["user_id"], wk_name)
-
-        # below triggers issues as the below code is run when a post request is sent for just the workout name
         # check 
         # get user input regarding exercise
         if "wk_plan_add" and "exercise_name" and "reps" and "weight" and "measurement" in request.form:
@@ -143,14 +137,14 @@ def workout_plan():
             weight = request.form.get("weight")
             measurement = request.form.get("measurement")
 
-        # todo: account for user entry errors for above
+            # todo: account for user entry errors for above
 
-        # obtain unique id for exercise
-        key = db.execute("SELECT id FROM exercises WHERE exercise = ?", exercise_name)
-        key = key[0]['id']
+            # obtain unique id for exercise
+            key = db.execute("SELECT id FROM exercises WHERE exercise = ?", exercise_name)
+            key = key[0]['id']
 
-        # add exercise to database for user
-        db.execute("INSERT INTO workout_details (trackuser, wk_name, track_ex, reps, weight, measurement) VALUES (?, ?, ?, ?, ?, ?)", session["user_id"], wk_name_add, key, reps, weight, measurement)
+            # add exercise to database for user
+            db.execute("INSERT INTO workout_details (trackuser, wk_name, track_ex, reps, weight, measurement) VALUES (?, ?, ?, ?, ?, ?)", session["user_id"], wk_name_add, key, reps, weight, measurement)
 
     # obtain user's self-made workout names
     user_workouts = db.execute("SELECT wk_name FROM users_wk_name WHERE user = ?", session["user_id"])
@@ -163,6 +157,12 @@ def workout_plan():
     
     # to display exercises with said muscle group
     muscle_display = request.args.get("exercises")
+
+    # let users search for exercises
+    if "q" in request.args:
+        test = request.args.get("q")
+        get_exercise = db.execute("SELECT * FROM exercises WHERE exercise LIKE ?", '%' + test + '%')
+        return render_template("workout_plan.html", get_exercise=get_exercise,  muscle=muscle, equipment=equipment, user_workouts=user_workouts)
 
     # once muscle group is chosen
     if muscle_display != None:
@@ -179,6 +179,54 @@ def workout_plan():
 
     return render_template("workout_plan.html", muscle=muscle, equipment=equipment, user_workouts=user_workouts)
 
+@app.route("/name_workout", methods=["GET", "POST"])
+@login_required
+def name_workout():
+    if request.method == "POST":
+
+        # get name of workout
+        if "wk_name" in request.form:
+            wk_name = request.form.get("wk_name")
+            db.execute("INSERT INTO users_wk_name (user, wk_name) VALUES (?, ?)", session["user_id"], wk_name)
+
+        return render_template("name_workout.html")
+
+        # todo add option to delete workout from here
+
+    return render_template("name_workout.html")
+
+@app.route("/add_workout", methods=["GET", "POST"])
+@login_required
+def add_workout():
+    if request.method == "POST":
+
+        # get user input regarding exercise
+        if "wk_plan_add" and "exercise_name" and "reps" and "weight" and "measurement" in request.form:
+            wk_name_add = request.form.get("wk_plan_add")
+            exercise_name = request.form.get("exercise_name")
+            reps = request.form.get("reps")
+            weight = request.form.get("weight")
+            measurement = request.form.get("measurement")
+
+            # todo: account for user entry errors for above
+
+            # obtain unique id for exercise
+            key = db.execute("SELECT id FROM exercises WHERE exercise = ?", exercise_name)
+            key = key[0]['id']
+
+            # add exercise to database for user
+            db.execute("INSERT INTO workout_details (trackuser, wk_name, track_ex, reps, weight, measurement) VALUES (?, ?, ?, ?, ?, ?)", session["user_id"], wk_name_add, key, reps, weight, measurement)
+    
+    # obtain user's self-made workout names
+    user_workouts = db.execute("SELECT wk_name FROM users_wk_name WHERE user = ?", session["user_id"])
+
+    # let users search for exercises
+    if "q" in request.args:
+        test = request.args.get("q")
+        get_exercise = db.execute("SELECT * FROM exercises WHERE exercise LIKE ?", '%' + test + '%')
+        return render_template("add_workout.html", get_exercise=get_exercise, user_workouts=user_workouts)
+
+    return render_template("add_workout.html", user_workouts=user_workouts)
 
 @app.route("/view_plan", methods=["GET", "POST"])
 @login_required

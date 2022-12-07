@@ -5,76 +5,10 @@
 {% endblock %}
 
 {% block main %}
+
+<!-- links -->
+<a href="/name_workout">Create or Delete Workout</a>
+<a href="/add_workout">Add exercise to workout</a>
 <!-- create workout -->
-<form action="/workout_plan" method="post">
-    <input autocomplete="off" autofocus name="wk_name" placeholder="Name your workout" type="text">
-    <input type="submit">
-</form>
-
-<!-- add exercise to a created workout -->
-<form action="/workout_plan" method="post">
-    <label for="wk_plan_add">Workout Plan</label>
-    <select name="wk_plan_add">
-        <option style="display:none;" value="0">Select Workout</option>.
-        {% for i in user_workouts %}
-        <option value="{{i['wk_name']}}">{{i['wk_name']}}</option>
-        {% endfor %}
-    </select>
-    <!-- todo make it so exercise names are auto-suggested to the user for them to select rather than them type it out-->
-    <input placeholder="Exercise Name" name="exercise_name" type="text" autocomplete="off">
-    <input placeholder="reps" name="reps" type="text" autocomplete="off">
-    <input placeholder="weight" name="weight" type="number" autocomplete="off">
-    <input placeholder="measurement" name="measurement" type="text" autocomplete="off">
-    <input type="submit" value="Submit"/>
-</form>
-
-<!-- select exercises to browse -->
-<li>
-    <form action="/workout_plan">
-        <label for="exercises">Browse by muscle</label>
-        <select name="exercises">
-        {% for i in muscle%}
-            <option value="{{i['muscle']}}">{{i['muscle']}}</option>
-        {% endfor %}
-        </select>
-        <input type="submit">
-    </form>
-  </li>
-  <li>
-    <form action="/workout_plan">
-        <label for="equipments">Browse by equipment</label>
-        <select name="equipments">
-        {% for i in equipment%}
-            <option value="{{i['equipment']}}">{{i['equipment']}}</option>
-        {% endfor %}
-        </select>
-        <input type="submit">
-  </li>
-
-<!-- display selected exercises to browse -->
-
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Exercise</th>
-            <th scope="col">Muscle Targeted</th>
-            <th scope="col">Equipment Required</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for i in category_to_display%}
-            <tr>
-                <td>{{i['exercise']}}</td>
-                <td>{{i['muscle']}}</td>
-                <td>{{i['equipment']}}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-  </table>
-
-<!-- allow user to add exercise to their workout 
- - present the workouts the user has chosen (likely make a separate page)
- - provide option for user to remove exercise from table
--->
 
 {% endblock %}
