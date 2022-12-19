@@ -1,5 +1,4 @@
-
-    /* customize navigation bar*/
+/* customize navigation bar*/
 nav {
     position: fixed;
     top: 0;
@@ -10,26 +9,73 @@ nav {
     margin-right: auto;
     width: 100%;
     text-align: center;
-    background-color: #361436;
+    background-color:whitesmoke;
 }
 
-    /* customize navigation bar links*/
+/* customize navigation bar links*/
 nav a {
     font-weight: normal;
     padding: 10px 10px;
-    color: rgb(255, 255, 255);
+    color: rgb(53, 53, 53);
     text-decoration: none;
     font-weight: bold;
     font-size: 18px;
 }
 
-/* position div elements side-by-side */
+nav > a:hover {
+  color: crimson;
+}
 
-.side-by-side {
-    display: flex;
-    padding: 10px 10px 10px 30px;
-  }
+body {
+  /* stop body colliding with navigation bar*/
+  position: relative;
+  padding: 30px;
+  top: 80px;
+  background-color: rgb(237, 235, 235);
+  font-family: "Trebuchet MS", Verdana, sans-serif;
+}
 
+/* center divs */
+
+.center_div{
+  width: 10vw;
+  margin: 0 auto;
+}
+
+/* container for browse exercises and view plans using grid-template-areas */
+
+.container_brvp {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    gap: 20px;
+}
+
+/* apply grid-template-areas */
+
+.search_input {
+  grid-column: 1;
+  grid-row: 1 / 2;
+}
+
+.search_results {
+  grid-column: 2;
+  grid-row: 1 / 4;
+}
+
+/* standardise input sizes */
+
+.wide-select {
+  width: 50%;
+  min-width: 10%;
+}
+
+/* padding for headers */
+h1,
+h2,
+h3 {
+  padding-bottom: 10px;
+  color: rgb(0, 0, 0);
+}
 
 /* shift element */
 .move-right {
@@ -37,29 +83,20 @@ nav a {
     left: calc(100% - 77%);
   }
 
-h2 {
-    color: rgb(255, 255, 255);
+/* form customisation */
+.form_pad {
+  padding: 5px;
 }
 
-body {
-    /* stop body colliding with navigation bar*/
-    position: relative;
-    padding: 30px;
-    top: 80px;
-    background-color: #080606;
-}
-
-form {
-    color: rgb(255, 255, 255);
-}
+/* table customization */
 
 table {
     border-collapse: collapse;
-    width: 100%;
-    color: rgb(255, 255, 255);
-    margin: 0 auto;
+    width: 80%;
+    color: rgb(0, 0, 0);
     text-align: center;
     table-layout: fixed;
+    overflow: auto;
     width: 100%;
   }
 
@@ -70,9 +107,98 @@ th, td {
 
 th {
   font-size: 20px;
+  height: 5px;
 }
 
+/* make items sticky despite being in Grid Layout being in */
+.sticky {
+  position: sticky;
+  top: 10vh;
+  grid-row-start: 1; /* start in the first row */
+}
 
+/* Customise brand name */
+#brand_name {
+  display: inline;
+  position: relative;
+  right: 5vw;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: crimson;
+}
 
-/* pin element in place unless user scrolls */
+/* adjust location of register and login links to look more centrals */
+a[href="/register"], a[href="/login"]  {
+  position: relative;
+  right: 1.4vw;
+}
+/* style login and register forms. Also used for create exercise feature */
+.log_reg {
+  width: 300px;
+  position: relative;
+  right: 2vw;
+  text-align: center;
+  padding: 20px;
+  border: 1px solid rgb(193, 193, 193);
+  border-radius: 5px;
+}
 
+.log_reg > label {
+  display:block;
+  padding: 10px;
+  text-align: left;
+}
+
+.log_reg > input[type="text"], input[type="password"]{
+  width: 100%;
+  height: 2.4rem;
+  padding: 8px 8px;
+  margin: 10px 0px;
+  border: 1px solid rgb(204, 204, 204);
+  border-radius: 5px;
+}
+
+.log_reg > input[type="submit"] {
+  width: 100%;
+  background-color: crimson;
+  color: white;
+  padding: 14px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.log_reg > input[type="submit"]:hover {
+  background-color: rgb(255, 26, 72);
+}
+
+/* style searching in browse and view_plan pages */
+
+.log_reg > button {
+  background-color: crimson;
+  color: white;
+  height: 2.4rem;
+  margin-top: 10px;
+  width: 100%;
+}
+
+/* style searching in browse and view_plan pages */
+.search_form {
+  padding: 8px 8px
+}
+
+.search_form > input[type="submit"] {
+  background-color: crimson;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search_form > select, input[type="text"] {
+  background-color: rgb(253, 255, 255);
+  height: 1.8rem;
+  color: black;
+  border: none;
+}
