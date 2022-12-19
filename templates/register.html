@@ -1,14 +1,19 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Homepage
+    Register
 {% endblock %}
 
 {% block main %}
-<form action="/register" method="post">
-    <input autocomplete="off" autofocus name="username" placeholder="Name" type="text">
-    <input autocomplete="off" autofocus name="password" placeholder="Password" type="password">
-    <input autocomplete="off" autofocus name="confirmation" placeholder="Password confirm" type="password">
-    <input type="submit" value="Register">
- </form>
+<div class="mx-auto" style="width: 200px;">
+    <form action="/register" method="post">
+        <label for="name">Desired username</label><br>
+        <input autocomplete="off" autofocus name="username" id="name" placeholder="Name" type="text"><br>
+        <label for="password">Enter password</label><br>
+        <input autocomplete="off" autofocus name="password" id="password" placeholder="Password" type="password"><br>
+        <label for="confirmation">Confirm password</label><br>
+        <input autocomplete="off" autofocus name="confirmation" id="confirmation" placeholder="Password confirm" type="password"><br><br>
+        <input type="submit" value="Register">
+    </form>
+</div>
 {% endblock %}
