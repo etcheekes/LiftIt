@@ -5,58 +5,65 @@
 {% endblock %}
 
 {% block main %}
-         
-<div class="row">
-    <nav class="col-md-2 d-none d-md-block sidebar">
-      <div class="sidebar-sticky">
-        <ul class="nav flex-column">
-          <li>
-            <form action="/browse">
-                <label for="exercises">Choose a muscle: </label>
-                <select name="exercises">
-                {% for i in muscle%}
-                    <option value="{{i['muscle']}}">{{i['muscle']}}</option>
-                {% endfor %}
-                </select>
-                <input type="submit">
-            </form>
-          </li>
-          <li>
-            <form action="/browse">
-                <label for="equipments">Choose equipment: </label>
-                <select name="equipments">
-                {% for i in equipment%}
-                    <option value="{{i['equipment']}}">{{i['equipment']}}</option>
-                {% endfor %}
-                </select>
-                <input type="submit">
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <div role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-      <div style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div><div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">Exercises</h1>
-      </div>
-      <table class="table">
+
+  <div class="side-by-side">
+    <div>
+      <h2>Search exercises</h2>
+      <br>
+        <form action="/browse">
+            <input type="text" name="exercise_name" placeholder="Exercise name">
+            <input type="submit" value="Search">
+        </form>
+        <form action="/browse">
+            <select name="exercises">
+            <option style="display:none;" value="0">Select Muscle</option>
+            {% for i in muscle%}
+                <option value="{{i['muscle']}}">{{i['muscle']}}</option>
+            {% endfor %}
+            </select>
+            <input type="submit" value="Search">
+        </form>
+      <br>
+        <form action="/browse">
+            <select name="equipments">
+                <option style="display:none;" value="0">Select Equipment</option>
+            {% for i in equipment%}
+                <option value="{{i['equipment']}}">{{i['equipment']}}</option>
+            {% endfor %}
+            </select>
+            <input type="submit" value="Search">
+        </form>
+    </div>
+    <div class="side-by-side" style="padding-left: 100px">
+      <table>
         <thead>
-            <tr>
-                <th scope="col">Exercise</th>
-                <th scope="col">Muscle Targeted</th>
-                <th scope="col">Equipment Required</th>
-            </tr>
+          <th>Exercise</th>
+          <th>Muscle Targeted</th>
+          <th>Equipment Required</th>
+          <th>Remove</th>
         </thead>
         <tbody>
-            {% for i in category_to_display%}
-                <tr>
-                    <td>"{{i['exercise']}}"</td>
-                    <td>"{{i['muscle']}}"</td>
-                    <td>"{{i['equipment']}}"</td>
-                </tr>
-            {% endfor %}
-        </tbody>
+          {% for i in category_to_display%}
+            <tr>
+                <td>{{i['exercise']}}</td>
+                <td>{{i['muscle']}}</td>
+                <td>{{i['equipment']}}</td>
+                <!-- allow user to delete exercise from workout -->
+                <!-- obtain unique id for row that contains the exercise -->
+                <td>
+                    <form action="/delete_exercise_from_database", method="post">
+                      <input type="hidden" name="delete" value="{{i['id']}}">
+                      <button type="submit">Delete</button>
+                  </form>
+                </td>
+            </tr>
+          {% endfor %}
+      </tbody>
       </table>
     </div>
-</div>
+  </div>
+
+
+
 
 {% endblock %}
