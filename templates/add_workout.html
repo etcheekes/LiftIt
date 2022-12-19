@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block main %}
-<div class="container-fluid py-5 text-center">
+<div class="mx-auto" style="width: 200px;">
 <!-- add exercise to a created workout -->
-    <form action="/add_workout" method="post">
+    <form action="/add_workout" method="post" class="log_reg">
         <select name="wk_plan_add">
             <option style="display:none;" value="">Select Workout</option>
             {% for i in user_workouts %}
@@ -20,7 +20,7 @@
                 {% for i in all_exercises %}
                 <option value="{{i.exercise}}">
                 {% endfor %}
-            </datalist> <br>
+            </datalist>
         <input placeholder="reps" name="reps" type="text" autocomplete="off"><br>
         <input placeholder="weight" name="weight" type="number" autocomplete="off"><br>
         <input placeholder="measurement" name="measurement" type="text" autocomplete="off"><br>
