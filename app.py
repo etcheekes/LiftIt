@@ -93,23 +93,26 @@ def browse():
 
     # once muscle group is chosen
     if muscle_display != None:
+        reveal_table = 'show'
         category_to_display = db.execute("SELECT * FROM exercises WHERE (muscle = ? AND user_id = ?)", muscle_display, session["user_id"])
-        return render_template("browse.html", muscle=muscle, equipment=equipment, category_to_display=category_to_display)
+        return render_template("browse.html", muscle=muscle, equipment=equipment, category_to_display=category_to_display, reveal_table=reveal_table)
 
     # to display exercises by equipment
     equipment_display = request.args.get("equipments")
 
     #once equipment is chosen
     if equipment_display != None:
+        reveal_table = 'show'
         category_to_display = db.execute("SELECT * FROM exercises WHERE (equipment = ? AND user_id = ?)", equipment_display, session["user_id"])
-        return render_template("browse.html", muscle=muscle, equipment=equipment, category_to_display=category_to_display)
+        return render_template("browse.html", muscle=muscle, equipment=equipment, category_to_display=category_to_display, reveal_table=reveal_table)
 
     # to display exercises containing the text that the user inputted
     exercise_name = request.args.get("exercise_name")
 
     if exercise_name != None:
+        reveal_table = 'show'
         category_to_display = db.execute("SELECT * FROM exercises WHERE (exercise LIKE ?) AND user_id = ?", "%" + exercise_name + "%", session["user_id"])
-        return render_template("browse.html", muscle=muscle, equipment=equipment, category_to_display=category_to_display)
+        return render_template("browse.html", muscle=muscle, equipment=equipment, category_to_display=category_to_display, reveal_table=reveal_table)
 
     return render_template("browse.html", muscle=muscle, equipment=equipment)
 
