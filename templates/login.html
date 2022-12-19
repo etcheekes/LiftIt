@@ -5,10 +5,14 @@
 {% endblock %}
 
 {% block main %}
-<form action="/login" method="post">
-    <input autocomplete="off" autofocus name="username" placeholder="Name" type="text">
-    <input autocomplete="off" autofocus name="password" placeholder="Password" type="password">
-    <input type="submit" value="Log In">
- </form>
+<div class="mx-auto" style="width: 200px;">
+    <form action="/login" method="post">
+        <label for="username">Please enter username</label><br>
+        <input autocomplete="off" autofocus name="username" id="username" placeholder="username" type="text"><br>
+        <label for="password">Please enter password</label><br>
+        <input autocomplete="off" autofocus name="password" id="password" placeholder="Password" type="password"><br><br>
+        <input type="submit" value="Log In">
+    </form>
+</div>
 {% endblock %}
 
