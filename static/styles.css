@@ -1,4 +1,78 @@
-.center {
+
+    /* customize navigation bar*/
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding:20px;
     margin-left: auto;
     margin-right: auto;
+    width: 100%;
+    text-align: center;
+    background-color: #361436;
 }
+
+    /* customize navigation bar links*/
+nav a {
+    font-weight: normal;
+    padding: 10px 10px;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* position div elements side-by-side */
+
+.side-by-side {
+    display: flex;
+    padding: 10px 10px 10px 30px;
+  }
+
+
+/* shift element */
+.move-right {
+    position: absolute;
+    left: calc(100% - 77%);
+  }
+
+h2 {
+    color: rgb(255, 255, 255);
+}
+
+body {
+    /* stop body colliding with navigation bar*/
+    position: relative;
+    padding: 30px;
+    top: 80px;
+    background-color: #080606;
+}
+
+form {
+    color: rgb(255, 255, 255);
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    color: rgb(255, 255, 255);
+    margin: 0 auto;
+    text-align: center;
+    table-layout: fixed;
+    width: 100%;
+  }
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+  font-size: 20px;
+}
+
+
+
+/* pin element in place unless user scrolls */
+
