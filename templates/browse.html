@@ -6,62 +6,67 @@
 
 {% block main %}
 
-  <div class="side-by-side">
-    <div>
-      <h2>Search exercises</h2>
-      <br>
-        <form action="/browse">
-            <input type="text" name="exercise_name" placeholder="Exercise name">
-            <input type="submit" value="Search">
-        </form>
-        <form action="/browse">
-            <select name="exercises">
-            <option style="display:none;" value="0">Select Muscle</option>
-            {% for i in muscle%}
-                <option value="{{i['muscle']}}">{{i['muscle']}}</option>
-            {% endfor %}
-            </select>
-            <input type="submit" value="Search">
-        </form>
-      <br>
-        <form action="/browse">
-            <select name="equipments">
-                <option style="display:none;" value="0">Select Equipment</option>
-            {% for i in equipment%}
-                <option value="{{i['equipment']}}">{{i['equipment']}}</option>
-            {% endfor %}
-            </select>
-            <input type="submit" value="Search">
-        </form>
-    </div>
-    <div class="side-by-side" style="padding-left: 100px">
-      <table>
-        <thead>
-          <th>Exercise</th>
-          <th>Muscle Targeted</th>
-          <th>Equipment Required</th>
-          <th>Remove</th>
-        </thead>
-        <tbody>
-          {% for i in category_to_display%}
-            <tr>
-                <td>{{i['exercise']}}</td>
-                <td>{{i['muscle']}}</td>
-                <td>{{i['equipment']}}</td>
-                <!-- allow user to delete exercise from workout -->
-                <!-- obtain unique id for row that contains the exercise -->
-                <td>
-                    <form action="/delete_exercise_from_database", method="post">
-                      <input type="hidden" name="delete" value="{{i['id']}}">
-                      <button type="submit">Delete</button>
-                  </form>
-                </td>
-            </tr>
+  
+<div class="container_brvp">
+  <div class="search_input sticky">
+    <h2>Search Exercises</h2>
+      <form action="/browse" class="form_pad">
+          <input type="text" name="exercise_name" placeholder="Exercise name" class="wide-select">
+          <input type="submit" value="Search">
+      </form>
+      <form action="/browse" class="form_pad">
+          <select name="exercises" class="wide-select">
+          <option style="display:none;" value="0">Muscle</option>
+          {% for i in muscle%}
+              <option value="{{i['muscle']}}">{{i['muscle']}}</option>
           {% endfor %}
-      </tbody>
-      </table>
+          </select>
+          <input type="submit" value="Search">
+      </form>
+      <form action="/browse" class="form_pad">
+          <select name="equipments" class="wide-select">
+              <option style="display:none;" value="0">Equipment</option>
+          {% for i in equipment%}
+              <option value="{{i['equipment']}}">{{i['equipment']}}</option>
+          {% endfor %}
+          </select>
+          <input type="submit" value="Search">
+      </form>
     </div>
-  </div>
+  <table class="search_results" hidden="false" id="hiddenField">
+    <thead>
+      <th>Exercise</th>
+      <th>Muscle</th>
+      <th>Equipment</th>
+      <th>Remove</th>
+    </thead>
+    <tbody>
+      {% for i in category_to_display%}
+        <tr>
+            <td>{{i['exercise']}}</td>
+            <td>{{i['muscle']}}</td>
+            <td>{{i['equipment']}}</td>
+            <!-- allow user to delete exercise from workout -->
+            <!-- obtain unique id for row that contains the exercise -->
+            <td>
+                <form action="/delete_exercise_from_database", method="post">
+                  <input type="hidden" name="delete" value="{{i['id']}}">
+                  <button type="submit">Delete</button>
+              </form>
+            </td>
+        </tr>
+      {% endfor %}
+  </tbody>
+  </table> 
+      {% if reveal_table %}
+        <script>
+          // show table
+          showField();
+        </script>
+      {% endif %}
+</div>
+
+
 
 
 
