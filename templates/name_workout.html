@@ -5,8 +5,20 @@
 {% endblock %}
 
 {% block main %}
-<form action="/name_workout" method="post">
-    <input autocomplete="off" autofocus name="wk_name" placeholder="Name your workout" type="text">
-    <input type="submit">
-</form>
+<div class="mx-auto" style="width: 200px;">
+    <form action="/name_workout" method="post">
+        <input autocomplete="off" autofocus name="wk_name" placeholder="Workout Name" type="text">
+        <input type="submit">
+    </form>
+<!-- allow users to select and delete a workout -->
+    <form action="/name_workout" method="post">
+        <select name="wk_delete" class="form-select form-select-lg">
+            <option style="display:none;" value="0">Select Workout</option>
+            {% for i in user_workouts %}
+            <option value="{{i['wk_name']}}">{{i['wk_name']}}</option>
+            {% endfor %}
+            <input type="submit" value="Delete"/>
+        </select>
+    </form>
+</div>
 {% endblock %}
