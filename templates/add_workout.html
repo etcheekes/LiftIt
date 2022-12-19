@@ -5,30 +5,26 @@
 {% endblock %}
 
 {% block main %}
-<form action="/add_workout" method="get">
-    <input name="q" placeholder="Query" type="search">
-    <input type="submit">
-</form>
-<select>
-    {% for i in get_exercise %}
-        <option value="{{i['exercise']}}">{{ i['exercise'] }}</option>
-    {% endfor %}
-</select>
-
+<div class="container-fluid py-5 text-center">
 <!-- add exercise to a created workout -->
-<form action="/add_workout" method="post">
-    <label for="wk_plan_add">Workout Plan</label>
-    <select name="wk_plan_add">
-        <option style="display:none;" value="0">Select Workout</option>.
-        {% for i in user_workouts %}
-        <option value="{{i['wk_name']}}">{{i['wk_name']}}</option>
-        {% endfor %}
-    </select>
-    <!-- todo make it so exercise names are auto-suggested to the user for them to select rather than them type it out-->
-    <input placeholder="Exercise Name" name="exercise_name" type="text" autocomplete="off">
-    <input placeholder="reps" name="reps" type="text" autocomplete="off">
-    <input placeholder="weight" name="weight" type="number" autocomplete="off">
-    <input placeholder="measurement" name="measurement" type="text" autocomplete="off">
-    <input type="submit" value="Submit"/>
-</form>
+    <form action="/add_workout" method="post">
+        <select name="wk_plan_add">
+            <option style="display:none;" value="">Select Workout</option>
+            {% for i in user_workouts %}
+            <option value="{{i['wk_name']}}">{{i['wk_name']}}</option>
+            {% endfor %}
+        </select> <br>
+        <!-- auto-suggestion search -->
+        <input type="text" name="exercise_name" list="exercise-list" autocomplete="off" placeholder="Search for exercise">
+            <datalist id="exercise-list">
+                {% for i in all_exercises %}
+                <option value="{{i.exercise}}">
+                {% endfor %}
+            </datalist> <br>
+        <input placeholder="reps" name="reps" type="text" autocomplete="off"><br>
+        <input placeholder="weight" name="weight" type="number" autocomplete="off"><br>
+        <input placeholder="measurement" name="measurement" type="text" autocomplete="off"><br>
+        <input type="submit" value="Submit"/>
+    </form>
+</div>
 {% endblock %}
