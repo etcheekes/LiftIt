@@ -1,44 +1,52 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    view - workout - plans
+    Browse
 {% endblock %}
 
 {% block main %}
+  <div class="side-by-side">
+    <div>
+      <h2>Your Workout</h2>
         <form action="/view_plan" method="post">
             <select name="wk_plan">
+                <option style="display:none;" value="0">Select Workout</option>
                 {% for i in user_workouts %}
                 <option value="{{i['wk_name']}}">{{i['wk_name']}}</option>
                 {% endfor %}
                 <input type="submit" value="Submit"/>
             </select>
         </form>
-        <h2>Donkey</h2>
-            <table class="center">
-                <thead>
-                    <tr>
-                        <th>Exercise</th>
-                        <th>Muscle</th>
-                        <th>Equipment</th>
-                        <th>reps</th>
-                        <th>Weight</th>
-                    </tr>
-                </thead>
-                {% for i in users_wks%}
-                <tbody>
-                    
-                    <tr>
-                        <td>{{i['exercise']}}</td>
-                        <td>{{i['muscle']}}</td>
-                        <td>{{i['equipment']}}</td>
-                        <td>{{i['reps']}}</td>
-                        <td>{{i['weight'] + ' ' + i['measurement']}}</td>
-                    </tr>
-                </tbody>
-                {% endfor %}
-            </table>
-
-        {{users_wks}}
-    
-
+    </div>
+    <div class="side-by-side" style="padding-left: 100px">
+        <table>
+            <thead>
+                <th>Exercise</th>
+                <th>Muscle</th>
+                <th>Equipment</th>
+                <th>reps</th>
+                <th>Weight</th>
+                <th>Remove</th>
+            </thead>
+            <tbody>
+            {% for i in users_wks%}
+                <tr>
+                    <td>{{i['exercise']}}</td>
+                    <td>{{i['muscle']}}</td>
+                    <td>{{i['equipment']}}</td>
+                    <td>{{i['reps']}}</td>
+                    <td>{{i['weight'] + ' ' + i['measurement']}}</td>
+                    <!-- allow user to delete exercise from workout -->
+                    <td>
+                        <form action="/delete_exercise_from_workout_plan", method="post">
+                            <input type="hidden" name="delete" value="{{i['exercise']}}">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+  </div>
 {% endblock %}
