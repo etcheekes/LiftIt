@@ -10,11 +10,11 @@
 <div class="container_brvp">
   <div class="search_input sticky">
     <h2>Search Exercises</h2>
-      <form action="/browse" class="form_pad">
+      <form action="/browse" class="search_form">
           <input type="text" name="exercise_name" placeholder="Exercise name" class="wide-select">
           <input type="submit" value="Search">
       </form>
-      <form action="/browse" class="form_pad">
+      <form action="/browse" class="search_form">
           <select name="exercises" class="wide-select">
           <option style="display:none;" value="0">Muscle</option>
           {% for i in muscle%}
@@ -23,7 +23,7 @@
           </select>
           <input type="submit" value="Search">
       </form>
-      <form action="/browse" class="form_pad">
+      <form action="/browse" class="search_form">
           <select name="equipments" class="wide-select">
               <option style="display:none;" value="0">Equipment</option>
           {% for i in equipment%}
