@@ -5,21 +5,20 @@
 {% endblock %}
 
 {% block main %}
-  <div class="side-by-side">
-    <div>
+  <div class="container_brvp">
+    <div class="search_input sticky">
       <h2>Your Workout</h2>
-        <form action="/view_plan" method="post">
-            <select name="wk_plan">
+        <form action="/view_plan" method="post" class="form_pad">
+            <select name="wk_plan" class="wide-select">
                 <option style="display:none;" value="0">Select Workout</option>
                 {% for i in user_workouts %}
                 <option value="{{i['wk_name']}}">{{i['wk_name']}}</option>
                 {% endfor %}
-                <input type="submit" value="Submit"/>
+                <input type="submit" value="Retrieve"/>
             </select>
         </form>
     </div>
-    <div class="side-by-side" style="padding-left: 100px">
-        <table>
+        <table class="search_results" hidden="false" id="hiddenField">
             <thead>
                 <th>Exercise</th>
                 <th>Muscle</th>
@@ -47,6 +46,12 @@
             {% endfor %}
             </tbody>
         </table>
+        {% if users_wks %}
+        <script>
+          // show table
+          showField();
+        </script>
+        {% endif %}
     </div>
   </div>
 {% endblock %}
