@@ -48,7 +48,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 4fr;
     /* grid-auto-rows stops table row sizes from being affected by elements in neighbouring tracks */
-    grid-auto-rows: 10px;
+    grid-template-rows: 10px;
     gap: 20px;
 }
 
@@ -102,6 +102,16 @@ table {
     width: 100%;
   }
 
+thead:first-child{ border-bottom: 2px solid #555;}
+
+thead th:last-child {
+    width: 10%;
+  }
+
+tbody tr:nth-child(odd) {
+  background-color: white;
+}
+
 th, td {
   text-align: left;
   padding: 8px;
@@ -112,12 +122,19 @@ th {
   height: 5px;
 }
 
+.shorten_column {
+  width: 10%;
+}
+
 /* make items sticky despite being in Grid Layout being in */
+
 .sticky {
   position: sticky;
-  top: 10vh;
+  top: 13vh;
   grid-row-start: 1; /* start in the first row */
 }
+
+
 
 /* Customise brand name */
 #brand_name {
@@ -127,6 +144,12 @@ th {
   font-size: 1.4rem;
   font-weight: 700;
   color: crimson;
+}
+
+/* default style for buttons */
+button {
+  border: none;
+  border-radius: 5px;
 }
 
 /* adjust location of register and login links to look more centrals */
@@ -175,8 +198,6 @@ a[href="/register"], a[href="/login"]  {
   background-color: rgb(255, 26, 72);
 }
 
-/* style searching in browse and view_plan pages */
-
 .log_reg > button {
   background-color: crimson;
   color: white;
@@ -190,7 +211,7 @@ a[href="/register"], a[href="/login"]  {
   padding: 8px 8px
 }
 
-.search_form > input[type="submit"] {
+.search_form > input[type="submit"], select {
   background-color: crimson;
   color: white;
   border: none;
@@ -203,4 +224,32 @@ a[href="/register"], a[href="/login"]  {
   height: 1.8rem;
   color: black;
   border: none;
+}
+
+.search_form > input[type="submit"]:hover {
+  background-color: rgb(255, 26, 72);
+}
+
+/* style add exercise to workout plan */
+
+.add_exercise {
+    padding: 8px 8px;
+}
+
+.add_exercise > input[type="text"], input[type="number"] {
+  height: 1.8rem;
+  margin: 5px 0px;
+  padding: 8px 8px;
+}
+
+.add_exercise > input[type="submit"], select {
+  background-color: crimson;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add_exercise > input[type="submit"]:hover {
+  background-color: rgb(255, 26, 72);
 }
