@@ -202,7 +202,7 @@ def add_workout():
         # obtain all possible exercises 
         all_exercises = db.execute("SELECT exercise FROM exercises WHERE user_id = ?", session["user_id"])
 
-        # get user input regarding exercise
+        # get user input regarding adding exercise
         if "wk_plan_add" and "exercise_name" and "reps" and "weight" and "measurement" in request.form:
             wk_name_add = request.form.get("wk_plan_add")
             exercise_name = request.form.get("exercise_name")
@@ -240,35 +240,70 @@ def add_workout():
 @login_required
 def view():
 
-    if request.method == "POST":
-
-        # obtain name of user's made workouts
-        user_workouts = db.execute("SELECT wk_name FROM users_wk_name WHERE user = ?", session["user_id"])
-
-        # obtain user's desired workout
-        wk_choice = request.form.get("wk_plan")
-
-        # check user errors
-        # user submits blank
-        if len(wk_choice) == 0:
-            error = "Please choose a workout plan"
-            return render_template("error.html", error=error)
-
-        # data on the user's created workouts 
-        users_wks = db.execute("SELECT exercises.exercise, exercises.muscle, exercises.equipment, workout_details.wk_name, workout_details.reps, CAST (workout_details.weight AS TEXT)AS weight, workout_details.measurement FROM exercises INNER JOIN workout_details ON workout_details.track_ex=exercises.id WHERE workout_details.trackuser = ? AND workout_details.wk_name = ? ", session["user_id"], wk_choice)
-
-        # user submits workout that does not exist or has no exercises
-        if len(users_wks) == 0:
-            error = "That workout plan does not exist or lacks any exercises"
-            return render_template("error.html", error=error)
-
-        return render_template("view_plan.html", users_wks=users_wks, user_workouts=user_workouts)
-
     # obtain name of user's made workouts
     user_workouts = db.execute("SELECT wk_name FROM users_wk_name WHERE user = ?", session["user_id"])
-    
-    return render_template("view_plan.html", user_workouts=user_workouts)
-    # get workout names
+
+    # obtain all exercises available to the user
+    all_exercises = db.execute("SELECT exercise FROM exercises WHERE user_id = ?", session["user_id"])
+
+    if request.method == "POST":
+
+        # if user chooses to retrieve a workout
+        if "wk_plan" in request.form:
+
+            # obtain user's desired workout
+            wk_choice = request.form.get("wk_plan")
+
+            # check user errors
+            # user submits blank
+            if len(wk_choice) == 0:
+                error = "Please choose a workout plan"
+                return render_template("error.html", error=error)
+
+            # data on the user's created workouts 
+            users_wks = db.execute("SELECT exercises.exercise, exercises.muscle, exercises.equipment, workout_details.wk_name, workout_details.reps, CAST (workout_details.weight AS TEXT)AS weight, workout_details.measurement FROM exercises INNER JOIN workout_details ON workout_details.track_ex=exercises.id WHERE workout_details.trackuser = ? AND workout_details.wk_name = ? ", session["user_id"], wk_choice)
+
+            # user submits workout that does not exist or has no exercises
+            if len(users_wks) == 0:
+                error = "That workout plan does not exist or lacks any exercises"
+                return render_template("error.html", error=error)
+
+            return render_template("view_plan.html", users_wks=users_wks, user_workouts=user_workouts)
+        
+        # get user input regarding adding exercise
+        if "wk_plan_add" and "exercise_name" and "reps" and "weight" and "measurement" in request.form:
+            wk_name_add = request.form.get("wk_plan_add")
+            exercise_name = request.form.get("exercise_name")
+            reps = request.form.get("reps")
+            weight = request.form.get("weight")
+            measurement = request.form.get("measurement")
+
+            # throw error if user leaves field empty
+            # note wk_name_add returns '0' if workout name is not chosen
+            if len(wk_name_add) == 0 or len(exercise_name) == 0 or len(reps) == 0 or len(weight) == 0 or len(measurement) == 0:
+                error = "Please fill in all fields"
+                return render_template("error.html", error=error)
+
+            # error if exercise not in all_exercises
+            exercise_exists = 0
+            for exercise in all_exercises:
+                if exercise_name in exercise['exercise']:
+                    exercise_exists += 1
+            
+            if exercise_exists < 1:
+                error = "Exercise not in database, please choose from the suggestion"
+                return render_template("error.html", error=error)
+            
+            # obtain unique id for exercise
+            key = db.execute("SELECT id FROM exercises WHERE exercise = ? AND user_id =?", exercise_name, session["user_id"])
+            key = key[0]['id']
+
+            # add exercise to user workout
+            db.execute("INSERT INTO workout_details (trackuser, wk_name, track_ex, reps, weight, measurement) VALUES (?, ?, ?, ?, ?, ?)", session["user_id"], wk_name_add, key, reps, weight, measurement)
+        
+        
+    return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises)
+
 
 
 @app.route("/register", methods=["POST", "GET"])
