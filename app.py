@@ -198,6 +198,9 @@ def view():
 
     if request.method == "POST":
 
+        # variable to trigger javascript to reload the same workout table that the user just added to
+        keep = "keep"
+
         # if user chooses to retrieve a workout
         if "wk_plan" in request.form:
 
@@ -220,7 +223,8 @@ def view():
 
             return render_template("view_plan.html", users_wks=users_wks, user_workouts=user_workouts, wk_choice=wk_choice, all_exercises=all_exercises)
         
-        # get user input regarding adding exercise
+        # if user wishes to add new exercise to a workout plan
+
         if "wk_plan_add" and "exercise_name" and "reps" and "weight" and "measurement" in request.form:
             wk_name_add = request.form.get("wk_plan_add")
             exercise_name = request.form.get("exercise_name")
@@ -250,8 +254,24 @@ def view():
 
             # add exercise to user workout
             db.execute("INSERT INTO workout_details (trackuser, wk_name, track_ex, reps, weight, measurement) VALUES (?, ?, ?, ?, ?, ?)", session["user_id"], wk_name_add, key, reps, weight, measurement)
-            
+
+            return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep)
         
+        # remove exercise from workout plan
+        if "delete" in request.form:
+
+            # get exercise to delete
+            to_delete = request.form.get("delete")
+
+            # get id number for exercise
+            exercise_id = db.execute("SELECT id FROM exercises WHERE exercise = ? AND user_id = ?", to_delete, session["user_id"])
+            exercise_id = exercise_id[0]['id']
+
+            # remove exercise from workout plan
+            db.execute("DELETE FROM workout_details WHERE track_ex = ? AND trackuser = ?", exercise_id, session["user_id"])
+            
+            return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep)
+
     return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises)
 
 
@@ -295,27 +315,6 @@ def register():
     else:
         return render_template("register.html")
 
-@app.route("/delete_exercise_from_workout_plan", methods=["POST", "GET"])
-@login_required
-def deletion():
-
-    # This page serves only to delete exercise from a user-created workout
-    if request.method == "POST":
-
-        # get exercise to delete
-        to_delete = request.form.get("delete")
-
-        # get id number for exercise
-        exercise_id = db.execute("SELECT id FROM exercises WHERE exercise = ? AND user_id = ?", to_delete, session["user_id"])
-        exercise_id = exercise_id[0]['id']
-
-        # remove exercise from workout plan
-        db.execute("DELETE FROM workout_details WHERE track_ex = ? AND trackuser = ?", exercise_id, session["user_id"])
-        
-        # obtain user-created workouts to feed back into view_plan page
-        user_workouts = db.execute("SELECT wk_name FROM users_wk_name WHERE user = ?", session["user_id"])
-
-        return render_template("view_plan.html", user_workouts=user_workouts)
 
 @app.route("/delete_exercise_from_database", methods=["POST"])
 @login_required

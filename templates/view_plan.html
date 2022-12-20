@@ -59,7 +59,7 @@
                     <td>{{i['weight'] + ' ' + i['measurement']}}</td>
                     <!-- allow user to delete exercise from workout -->
                     <td>
-                        <form action="/delete_exercise_from_workout_plan", method="post">
+                        <form action="/view_plan", method="post">
                             <input type="hidden" name="delete" value="{{i['exercise']}}">
                             <button type="submit">Delete</button>
                         </form>
