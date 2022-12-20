@@ -17,6 +17,25 @@
                 <input type="submit" value="Retrieve"/>
             </select>
         </form>
+            <form action="/view_plan" method="post" class="log_reg">
+            <select name="wk_plan_add">
+                <option style="display:none;" value="">Select Workout</option>
+                {% for i in user_workouts %}
+                <option value="{{i['wk_name']}}">{{i['wk_name']}}</option>
+                {% endfor %}
+            </select> <br>
+            <!-- auto-suggestion search -->
+            <input type="text" name="exercise_name" list="exercise-list" autocomplete="off" placeholder="Search for exercise">
+                <datalist id="exercise-list">
+                    {% for i in all_exercises %}
+                    <option value="{{i.exercise}}">
+                    {% endfor %}
+                </datalist>
+            <input placeholder="reps" name="reps" type="text" autocomplete="off"><br>
+            <input placeholder="weight" name="weight" type="number" autocomplete="off"><br>
+            <input placeholder="measurement" name="measurement" type="text" autocomplete="off"><br>
+            <input type="submit" value="Submit"/>
+        </form>
     </div>
         <table class="search_results" hidden="false" id="hiddenField">
             <thead>
