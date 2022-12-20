@@ -47,6 +47,8 @@ body {
 .container_brvp {
     display: grid;
     grid-template-columns: 1fr 4fr;
+    /* grid-auto-rows stops table row sizes from being affected by elements in neighbouring tracks */
+    grid-auto-rows: 10px;
     gap: 20px;
 }
 
