@@ -13,7 +13,7 @@ nav {
 }
 
 /* customize navigation bar links*/
-nav a {
+nav > a {
     font-weight: normal;
     padding: 10px 10px;
     color: rgb(53, 53, 53);
@@ -26,6 +26,7 @@ nav > a:hover {
   color: crimson;
 }
 
+
 body {
   /* stop body colliding with navigation bar*/
   position: relative;
@@ -35,11 +36,24 @@ body {
   font-family: "Trebuchet MS", Verdana, sans-serif;
 }
 
+/* paragraph text */
+
+p {
+  line-height: 1.6;
+  text-align: left;
+}
+
 /* center divs */
 
 .center_div{
-  width: 10vw;
-  margin: 0 auto;
+  margin: auto;
+  width: 40%;
+}
+
+/* center text */
+
+.center_text{
+  text-align: center;
 }
 
 /* container for browse exercises and view plans using grid-template-areas */
@@ -134,13 +148,21 @@ th {
   grid-row-start: 1; /* start in the first row */
 }
 
+/* customise introduction text */
 
+.intro_text {
+  margin-top: 3vh;
+}
 
+h1 > span {
+
+  color: crimson;
+}
 /* Customise brand name */
 #brand_name {
   display: inline;
   position: relative;
-  right: 5vw;
+  right: 2vw;
   font-size: 1.4rem;
   font-weight: 700;
   color: crimson;
@@ -152,16 +174,16 @@ button {
   border-radius: 5px;
 }
 
-/* adjust location of register and login links to look more centrals */
+/* adjust location of register and login links to look more central */
 a[href="/register"], a[href="/login"]  {
   position: relative;
   right: 1.4vw;
 }
+
 /* style login and register forms. Also used for create exercise feature */
 .log_reg {
   width: 300px;
   position: relative;
-  right: 2vw;
   text-align: center;
   padding: 20px;
   border: 1px solid rgb(193, 193, 193);
@@ -169,7 +191,7 @@ a[href="/register"], a[href="/login"]  {
 }
 
 .log_reg > label {
-  display:block;
+  display: block;
   padding: 10px;
   text-align: left;
 }
@@ -215,6 +237,8 @@ a[href="/register"], a[href="/login"]  {
   background-color: crimson;
   color: white;
   border: none;
+  width: 24%;
+  min-width: 54px;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -236,20 +260,98 @@ a[href="/register"], a[href="/login"]  {
     padding: 8px 8px;
 }
 
-.add_exercise > input[type="text"], input[type="number"] {
+.add_exercise > input[type="text"] {
   height: 1.8rem;
+  width: 75%;
   margin: 5px 0px;
   padding: 8px 8px;
 }
 
-.add_exercise > input[type="submit"], select {
+.add_exercise > input[type="submit"] {
   background-color: crimson;
   color: white;
+  height: 1.8rem;
+  width: 75%;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
+.add_exercise > select {
+  width: 75%;
+}
+
 .add_exercise > input[type="submit"]:hover {
   background-color: rgb(255, 26, 72);
 }
+
+/* style manage workout */
+
+.manage {
+  width: 100%;
+  position: relative;
+  text-align: center;
+  padding: 8px;
+}
+
+.manage > input[type="text"] {
+  height: 1.8rem;
+  width: 80%;
+  margin: 5px 0px;
+  padding: 8px 8px;
+}
+
+.border_manage {
+  border: 1px solid rgb(193, 193, 193);
+  border-radius: 5px;
+  width: 20%;
+}
+
+.manage > input[type="submit"]:hover {
+  background-color: rgb(255, 26, 72);
+}
+
+.manage > input[type="submit"], select {
+  background-color: crimson;
+  color: white;
+  height: 1.8rem;
+  width: 80%;
+  text-align: center;
+  margin-top: 3%;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+/* customise buttons */
+
+.button_link {
+  background-color: crimson;
+  color: white;
+  margin-top: 3%;
+  font-size: 1rem;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  width: 80%;
+}
+
+a.button_link:hover {
+  background-color: rgb(255, 26, 72);
+}
+
+/* customise delete buttons from tables */
+
+td > form > button {
+  background-color:transparent;
+}
+
+td > form > button:hover {
+  color: rgb(255, 26, 72);
+}
+
+
+
