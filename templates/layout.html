@@ -12,19 +12,21 @@
         
         <!-- link stylesheet -->
         <link href="/static/styles.css" rel="stylesheet">
+
+        <!-- link javascript -->
         <script src="/static/main.js"></script>
 
     <title>Workout: {% block title %}{% endblock %}</title>
     </head>
     <body>
         <nav>
-                <p id="brand_name">Lift-It</p>
+                <a href="/" id="brand_name">Lift-It</a>
             {% if session["user_id"] %}
                 <a href="/browse">Browse Exercises</a>
-                <a href="/workout_plan">Make Workout</a>
-                <a href="/view_plan">View Plans</a>
-                <a href="#">Track</a>
-                <a href="#">History</a>
+                <a href="/name_workout">Manage Workouts</a>
+                <a href="/view_plan">Customise Workouts</a>
+                <!-- a href="#">Track</a -->
+                <!-- a href="#">History</a -->
                 <a href="/add_exercise">Create Exercise</a>
                 <a href="/logout">logout</a>
             {%else%}
