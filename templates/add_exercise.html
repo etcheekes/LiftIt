@@ -6,12 +6,11 @@
 
 {% block main %}
 <div class="center_div">
-    <h3 class="center_div">
-        Create Exercise
-    </h3>
-    <form action="/add_exercise" method="post" class="log_reg">
+    <form action="/add_exercise" method="post" class="log_reg center_div">
+        <h3>
+            Create Exercise
+        </h3>
         <input placeholder="Exercise Name" name="name_store" type="text" autocomplete="off">
-        <!-- input placeholder="Muscle Worked" name="muscle_store" type="text" autocomplete="off" -->
         <input placeholder="Muscle Worked" name="muscle_store" type="text" autocomplete="off" list="muscle-list">
             <datalist id="muscle-list">
                 {% for i in all_muscles %}
