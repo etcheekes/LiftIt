@@ -145,14 +145,6 @@ def add_exercise():
     return render_template("add_exercise.html", all_muscles=all_muscles, all_equipment=all_equipment)
 
 
-# functions as simple bridging page to add_workout and name_workout pages
-@app.route("/workout_plan", methods=["POST", "GET"])
-@login_required
-def workout_plan():
-
-    return render_template("workout_plan.html")
-
-
 
 @app.route("/name_workout", methods=["GET", "POST"])
 @login_required
