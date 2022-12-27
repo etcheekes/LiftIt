@@ -150,25 +150,40 @@ def add_exercise():
 @login_required
 def name_workout():
 
+    user_workouts = db.execute("SELECT wk_name FROM users_wk_name WHERE user = ?", session["user_id"])
 
     if request.method == "POST":
 
         # create name for workout
         if "wk_name" in request.form:
             wk_name = request.form.get("wk_name")
+
+            # error if blank name supplied
+            if len(wk_name) == 0:
+                error = "Workout name can not be blank"
+                return render_template("error.html", error=error)
+            
+            # error if workout name already taken
+            for name in user_workouts:
+                if name['wk_name'] == wk_name:
+                    error = "Workout with that name already exists"
+                    return render_template("error.html", error=error)
+            
             db.execute("INSERT INTO users_wk_name (user, wk_name) VALUES (?, ?)", session["user_id"], wk_name)
         
         # delete workout
         if "wk_delete" in request.form:
             wk_delete = request.form.get("wk_delete")
+            # check if user has not selected a workout
+            if wk_delete == '0':
+                error = "please select an existing workout"
+                return render_template("error.html", error=error)
             db.execute("DELETE FROM users_wk_name WHERE wk_name = ? AND user = ?", wk_delete, session["user_id"])
             db.execute("DELETE FROM workout_details WHERE wk_name = ? AND trackuser = ?", wk_delete, session["user_id"])
 
-        user_workouts = db.execute("SELECT wk_name FROM users_wk_name WHERE user = ?", session["user_id"])
 
         return render_template("name_workout.html", user_workouts=user_workouts)
 
-        # todo add option to delete workout from here
     
     # obtain name of user's made workouts
     user_workouts = db.execute("SELECT wk_name FROM users_wk_name WHERE user = ?", session["user_id"])
