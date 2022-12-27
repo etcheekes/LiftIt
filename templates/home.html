@@ -6,6 +6,7 @@
 
 {% block main %}
 <div class="center_div intro_text">
+    {% if session["user_id"] %}
     <h1><span>W</span>elcome!</h1>
 
     <p>Welcome to Lift-It! I believe that everyone's fitness journey is unique, and that's why I've created an app that lets you create your own workouts </p>
@@ -17,5 +18,11 @@
     <p>Browse some exercises that come with the app by default, or add your favourites yourself, this app is designed to put the power in your hands.</p>
 
     <p>Thank you for choosing our app. We hope it helps you take control of your fitness journey and reach your goals. Let's get started creating your perfect workout!</p>
+    
+    {%else%}
+
+    <h1 id="generic_intro"><span>A workout just for you.</span></h1>
+    
+    {% endif %}
 </div>
 {% endblock %}
