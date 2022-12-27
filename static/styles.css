@@ -168,6 +168,15 @@ h1 > span {
   color: crimson;
 }
 
+/* customise intro for non-logged in users */
+#generic_intro {
+  text-align: center;
+  color: crimson;
+  position: relative;
+  top: 25vh;
+
+}
+
 /* default style for buttons */
 button {
   border: none;
