@@ -45,16 +45,19 @@ def login():
 
     # If user submitted a form via POST (i.e., submitted login details)
     if request.method == "POST":
+        
+        # store current url to use in <a> tag on error page
+        url = request.url
 
         # check username submitted
         if not request.form.get("username"):
             error = "must provide username"
-            return render_template("error.html", error=error)
+            return render_template("error.html", error=error, url=url)
 
         # Ensure password submitted
         elif not request.form.get("password"):
             error = "must provide password"
-            return render_template("error.html", error=error)
+            return render_template("error.html", error=error, url=url)
 
         # Obtain username
         rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
@@ -62,7 +65,7 @@ def login():
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
             error = "invalid username and/or password"
-            return render_template("error.html", error=error)
+            return render_template("error.html", error=error, url=url)
 
         # Remember which user has logged in
         session["user_id"] = rows[0]["id_user"]
@@ -127,11 +130,13 @@ def add_exercise():
         store_muscle = request.form.get("muscle_store")
         store_equip = request.form.get("equip_store")
 
+        # store url for use in <a> tag in error.htm;
+        url = request.url
+
         # error if empty submission
         if len(store_name) == 0 or len(store_muscle) == 0 or len(store_equip) == 0:
-            # TO.DO create error.html template
             error = "Please fill in all fields"
-            return render_template("error.html", error=error)
+            return render_template("error.html", error=error, url=url)
         
         # error if exercise name already exists
         user_exercises = db.execute("SELECT exercise FROM exercises WHERE user_id = ?", session["user_id"])
@@ -139,7 +144,7 @@ def add_exercise():
         for exercise in user_exercises:
             if exercise['exercise'] == store_name:
                 error = "Exercise name taken"
-                return render_template("error.html", error=error)
+                return render_template("error.html", error=error, url=url)
 
         # Update database with new exercise
         db.execute("INSERT INTO exercises (exercise, muscle, equipment, user_id) VALUES (?, ?, ?, ?)", store_name, store_muscle, store_equip, session["user_id"])
@@ -163,6 +168,9 @@ def name_workout():
 
     if request.method == "POST":
 
+        # store current url to use in <a> tag in error.html
+        url = request.url
+
         # create name for workout
         if "wk_name" in request.form:
             wk_name = request.form.get("wk_name")
@@ -170,13 +178,13 @@ def name_workout():
             # error if blank name supplied
             if len(wk_name) == 0:
                 error = "Workout name can not be blank"
-                return render_template("error.html", error=error)
+                return render_template("error.html", error=error, url=url)
             
             # error if workout name already taken
             for name in user_workouts:
                 if name['wk_name'] == wk_name:
                     error = "Workout with that name already exists"
-                    return render_template("error.html", error=error)
+                    return render_template("error.html", error=error, url=url)
             
             db.execute("INSERT INTO users_wk_name (user, wk_name) VALUES (?, ?)", session["user_id"], wk_name)
         
@@ -186,7 +194,7 @@ def name_workout():
             # check if user has not selected a workout
             if wk_delete == '0':
                 error = "please select an existing workout"
-                return render_template("error.html", error=error)
+                return render_template("error.html", error=error, url=url)
             db.execute("DELETE FROM users_wk_name WHERE wk_name = ? AND user = ?", wk_delete, session["user_id"])
             db.execute("DELETE FROM workout_details WHERE wk_name = ? AND trackuser = ?", wk_delete, session["user_id"])
 
@@ -217,6 +225,9 @@ def view():
         # variable to trigger javascript to reload the same workout table that the user just added to
         keep = "keep"
 
+        # for <a> tag in error.html
+        url = request.url
+
         # if user chooses to retrieve a workout
         if "wk_plan" in request.form:
 
@@ -227,7 +238,7 @@ def view():
             # user submits blank
             if len(wk_choice) == 0:
                 error = "Please choose a workout plan"
-                return render_template("error.html", error=error)
+                return render_template("error.html", error=error, url=url)
 
             # data on the user's created workouts 
             users_wks = db.execute("SELECT exercises.exercise, exercises.muscle, exercises.equipment, workout_details.wk_name, workout_details.reps, CAST (workout_details.weight AS TEXT)AS weight, workout_details.measurement FROM exercises INNER JOIN workout_details ON workout_details.track_ex=exercises.id WHERE workout_details.trackuser = ? AND workout_details.wk_name = ? ", session["user_id"], wk_choice)
@@ -235,7 +246,7 @@ def view():
             # user submits workout that does not exist or has no exercises
             if len(users_wks) == 0:
                 error = "That workout plan does not exist or lacks any exercises"
-                return render_template("error.html", error=error)
+                return render_template("error.html", error=error, url=url)
 
             return render_template("view_plan.html", users_wks=users_wks, user_workouts=user_workouts, wk_choice=wk_choice, all_exercises=all_exercises)
         
@@ -251,8 +262,9 @@ def view():
             # throw error if user leaves field empty
             # note wk_name_add returns '0' if workout name is not chosen
             if len(wk_name_add) == 0 or len(exercise_name) == 0 or len(reps) == 0 or len(weight) == 0 or len(measurement) == 0:
+                url = request.url
                 error = "Please fill in all fields"
-                return render_template("error.html", error=error)
+                return render_template("error.html", error=error, url=url)
 
             # error if exercise not in all_exercises
             exercise_exists = 0
@@ -262,7 +274,8 @@ def view():
             
             if exercise_exists < 1:
                 error = "Exercise not in database, please choose from the suggestion"
-                return render_template("error.html", error=error)
+                url = request.url
+                return render_template("error.html", error=error, url=url)
             
             # obtain unique id for exercise
             key = db.execute("SELECT id FROM exercises WHERE exercise = ? AND user_id =?", exercise_name, session["user_id"])
@@ -302,25 +315,28 @@ def register():
         password = request.form.get("password")
         password_confirm = request.form.get("confirmation")
 
+        # for <a> tag in error.html
+        url = request.url
+
         # Check for user entry errors
         if not username:
             error = "must provide a username"
-            return render_template("error.html", error=error)
+            return render_template("error.html", error=error, url=url)
         if not password:
             error = "must provide a passsword"
-            return render_template("error.html", error=error)
+            return render_template("error.html", error=error, url=url)
         if not password_confirm:
             error = "must confirm password"
-            return render_template("error.html", error=error)
+            return render_template("error.html", error=error, url=url)
         if password != password_confirm:
             error = "both passwords must be the same"
-            return render_template("error.html", error=error)
+            return render_template("error.html", error=error, url=url)
             
         # check if username already take
         name_check = db.execute("SELECT username FROM users WHERE username = ?", username)
         if len(name_check) != 0:
             error = "username already taken"
-            return render_template("error.html", error=error)
+            return render_template("error.html", error=error, url=url)
         
         # hash user's password
         password = generate_password_hash(password)
@@ -352,8 +368,9 @@ def delete():
         if row_to_delete[0]['id'] != 0:
             db.execute("DELETE FROM exercises WHERE id = ? and user_id = ?", int(to_delete), session["user_id"])
         else:
+            url = request.url
             error = "Exercise is not stored"
-            return render_template("error.html", error=error)
+            return render_template("error.html", error=error, url=url)
 
         return render_template("browse.html")
 
