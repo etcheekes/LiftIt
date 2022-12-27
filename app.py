@@ -127,10 +127,19 @@ def add_exercise():
         store_muscle = request.form.get("muscle_store")
         store_equip = request.form.get("equip_store")
 
-        # If not all fields are filled in
-        if None in (store_name, store_muscle, store_equip):
+        # error if empty submission
+        if len(store_name) == 0 or len(store_muscle) == 0 or len(store_equip) == 0:
             # TO.DO create error.html template
-            return render_template("home.html")
+            error = "Please fill in all fields"
+            return render_template("error.html", error=error)
+        
+        # error if exercise name already exists
+        user_exercises = db.execute("SELECT exercise FROM exercises WHERE user_id = ?", session["user_id"])
+
+        for exercise in user_exercises:
+            if exercise['exercise'] == store_name:
+                error = "Exercise name taken"
+                return render_template("error.html", error=error)
 
         # Update database with new exercise
         db.execute("INSERT INTO exercises (exercise, muscle, equipment, user_id) VALUES (?, ?, ?, ?)", store_name, store_muscle, store_equip, session["user_id"])
