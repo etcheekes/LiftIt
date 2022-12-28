@@ -98,7 +98,7 @@ def browse():
     if muscle_display != None:
         reveal_table = 'show'
         category_to_display = db.execute("SELECT * FROM exercises WHERE (muscle = ? AND user_id = ?)", muscle_display, session["user_id"])
-        return render_template("browse.html", muscle=muscle, equipment=equipment, category_to_display=category_to_display, reveal_table=reveal_table)
+        return render_template("browse.html", muscle=muscle, equipment=equipment, category_to_display=category_to_display, reveal_table=reveal_table, muscle_display=muscle_display)
 
     # to display exercises by equipment
     equipment_display = request.args.get("equipments")
@@ -107,7 +107,7 @@ def browse():
     if equipment_display != None:
         reveal_table = 'show'
         category_to_display = db.execute("SELECT * FROM exercises WHERE (equipment = ? AND user_id = ?)", equipment_display, session["user_id"])
-        return render_template("browse.html", muscle=muscle, equipment=equipment, category_to_display=category_to_display, reveal_table=reveal_table)
+        return render_template("browse.html", muscle=muscle, equipment=equipment, category_to_display=category_to_display, reveal_table=reveal_table, equipment_display=equipment_display)
 
     # to display exercises containing the text that the user inputted
     exercise_name = request.args.get("exercise_name")
@@ -284,7 +284,7 @@ def view():
             # add exercise to user workout
             db.execute("INSERT INTO workout_details (trackuser, wk_name, track_ex, reps, weight, measurement) VALUES (?, ?, ?, ?, ?, ?)", session["user_id"], wk_name_add, key, reps, weight, measurement)
 
-            return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep)
+            return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
         
         # remove exercise from workout plan
         if "delete" in request.form:
@@ -298,6 +298,9 @@ def view():
 
             # remove exercise from workout plan
             db.execute("DELETE FROM workout_details WHERE track_ex = ? AND trackuser = ?", exercise_id, session["user_id"])
+
+            # get workout name to use in javascript 
+            
             
             return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep)
 
@@ -355,10 +358,13 @@ def delete():
     # This page serves only to delete exercises from the database (deletion is specific to the user logged in)
     if request.method == "POST":
 
+        # obtain distinct categories from default options and user created exercises. 
+        muscle = db.execute("SELECT DISTINCT muscle FROM exercises WHERE user_id = ?", session["user_id"])
+        equipment = db.execute("SELECT DISTINCT equipment FROM exercises WHERE user_id = ?", session["user_id"])
+
         # get exercise row to delete
         to_delete = request.form.get("delete")
         row_to_delete = db.execute("SELECT * FROM exercises WHERE id = ? and user_id = ?", to_delete, session["user_id"])
-
 
         # check and (if existing) remove exercise from the user's personal workout plans 
         if row_to_delete[0]['id'] != 0:
@@ -372,9 +378,24 @@ def delete():
             error = "Exercise is not stored"
             return render_template("error.html", error=error, url=url)
 
-        return render_template("browse.html")
+        # counter to stop infinite loop of page reloading
+        counter = 0
 
+        # get category (i.e., equipment or muscle) to use so we can re-display the same table after the user deletes a row
+        if "muscle" in request.form:
+            muscle_display = request.form.get("muscle")
+            return render_template("browse.html", muscle_display=muscle_display, muscle=muscle, equipment=equipment, counter=counter)
+        elif "equipment" in request.form:
+            equipment_display = request.form.get("equipment")
+            return render_template("browse.html", equipment_display=equipment_display, muscle=muscle, equipment=equipment, counter=counter)
         
+
+        # page is rendered depending on the category that the user inputed to browse exercises
+        # if variable exists
+        #if muscle_display:
+        #    return render_template("browse.html", muscle_display=muscle_display, muscle=muscle, equipment=equipment, counter=counter)
+        #elif equipment_display:
+        #    return render_template("browse.html", equipment_display=equipment_display, muscle=muscle, equipment=equipment, counter=counter)
 
 
 @app.route("/logout")

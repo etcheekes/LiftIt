@@ -14,8 +14,8 @@
           <input type="text" name="exercise_name" placeholder="Exercise name" class="wide-select" autocomplete="off">
           <input type="submit" value="Search">
       </form>
-      <form action="/browse" class="search_form">
-          <select name="exercises" class="wide-select">
+      <form action="/browse" class="search_form" id="muscle_form">
+          <select name="exercises" class="wide-select" id="muscle_search">
           <option style="display:none;" value="0">Muscle</option>
           {% for i in muscle%}
               <option value="{{i['muscle']}}">{{i['muscle']}}</option>
@@ -23,8 +23,8 @@
           </select>
           <input type="submit" value="Search">
       </form>
-      <form action="/browse" class="search_form">
-          <select name="equipments" class="wide-select">
+      <form action="/browse" class="search_form" id="equipment_form">
+          <select name="equipments" class="wide-select" id="equipment_search">
               <option style="display:none;" value="0">Equipment</option>
           {% for i in equipment%}
               <option value="{{i['equipment']}}">{{i['equipment']}}</option>
@@ -51,6 +51,12 @@
             <td>
                 <form action="/delete_exercise_from_database" method="post" onsubmit="return conDelete()">
                   <input type="hidden" name="delete" value="{{i['id']}}">
+                  <!-- obtain reference to whether the user searched by muscle or equipment -->
+                  {% if muscle_display %}
+                    <input type="hidden" name="muscle" value="{{i['muscle']}}">
+                  {% elif equipment_display %}
+                    <input type="hidden" name="equipment" value="{{i['equipment']}}">
+                  {% endif %}
                   <button type="submit">Delete</button>
               </form>
             </td>
@@ -58,10 +64,31 @@
       {% endfor %}
   </tbody>
   </table> 
+      <!-- show table once user submits search info -->
       {% if reveal_table %}
         <script>
-          // show table
           showField();
+        </script>
+      {% endif %}
+
+      <!-- make value for option tag the value the user chose upon page reload -->
+      {% if muscle_display and counter == 0 %}
+        <script>
+          // change select option name
+          changeOption('muscle_search', '{{ muscle_display }}');
+          // apply the select option change (TODO)
+          submitForm("muscle_form");
+          // breaks infinite loop of reloading page
+          counter = counter + 1
+        </script>
+      {% elif equipment_display and counter == 0 %}
+        <script>
+          // change select option name
+          changeOption('equipment_search', '{{ equipment_display }}');
+          // apply the select option change (TODO)
+          submitForm("equipment_form");
+          // breaks infinite loop of reloading page
+          counter = counter + 1
         </script>
       {% endif %}
 </div>
