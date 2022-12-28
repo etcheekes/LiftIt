@@ -16,7 +16,7 @@
     </form>
 
     <!-- allow users to select and delete a workout -->
-    <form action="/name_workout" method="post" class="manage center_div">
+    <form action="/name_workout" method="post" class="manage center_div" onsubmit="return conDelete()">
         <h3>Delete Workout</h3>
         <select name="wk_delete">
             <option style="display:none;" value="0">Select Workout</option>

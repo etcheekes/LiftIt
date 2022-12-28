@@ -49,7 +49,7 @@
             <!-- allow user to delete exercise from workout -->
             <!-- obtain unique id for row that contains the exercise -->
             <td>
-                <form action="/delete_exercise_from_database", method="post">
+                <form action="/delete_exercise_from_database" method="post" onsubmit="return conDelete()">
                   <input type="hidden" name="delete" value="{{i['id']}}">
                   <button type="submit">Delete</button>
               </form>

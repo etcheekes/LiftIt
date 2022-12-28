@@ -24,3 +24,9 @@ function changeOption(id, change) {
 function submitForm(id) {
   document.getElementById(id).submit();
 }
+
+// confirm delete
+
+function conDelete() {
+  return confirm("Confirm removal")
+}
