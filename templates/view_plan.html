@@ -52,7 +52,7 @@
                 <th>Remove</th>
             </thead>
             <tbody>
-            {% for i in users_wks%}
+            {% for i in users_wks %}
                 <tr>
                     <td>{{i['exercise']}}</td>
                     <td>{{i['muscle']}}</td>
@@ -74,15 +74,15 @@
             <script>
                 // show table
                 showField();
-                changeHeader("h2", 0, '{{ wk_choice }}')
-                changeOption('add_ex_to_wk', 'Test');
+                changeHeader("h2", 0, '{{ wk_choice }}');
+                changeOption('add_ex_to_wk', '{{ wk_choice }}');
             </script>
         {% endif %}
         {% if keep %}
             <script>
-                //changeOption("Test")
-                changeOption('get_wk_name', 'Test');
                 // submit form to maintain table for user
+                changeHeader("h2", 0, '{{ wk_name_add }}');
+                changeOption('get_wk_name', '{{ wk_name_add }}');
                 submitForm("retrieve_wk");
             </script>
         {% endif %}
