@@ -63,6 +63,7 @@
                     <td>
                         <form action="/view_plan" method="post" onsubmit="return conDelete()">
                             <input type="hidden" name="delete" value="{{i['exercise']}}">
+                            <input type="hidden" name="get_wk_name" value="{{i['wk_name']}}">
                             <button type="submit">Delete</button>
                         </form>
                     </td>
@@ -79,8 +80,8 @@
             </script>
         {% endif %}
         {% if keep %}
-            <script>
-                // submit form to maintain table for user
+            <script> 
+                // reload table with exercise addition or removal shown
                 changeHeader("h2", 0, '{{ wk_name_add }}');
                 changeOption('get_wk_name', '{{ wk_name_add }}');
                 submitForm("retrieve_wk");
