@@ -228,7 +228,7 @@ def view():
         # for <a> tag in error.html
         url = request.url
 
-        # if user chooses to retrieve a workout
+    # if user chooses to retrieve a workout
         if "wk_plan" in request.form:
 
             # obtain user's desired workout
@@ -250,7 +250,7 @@ def view():
 
             return render_template("view_plan.html", users_wks=users_wks, user_workouts=user_workouts, wk_choice=wk_choice, all_exercises=all_exercises)
         
-        # if user wishes to add new exercise to a workout plan
+    # if user wishes to add new exercise to a workout plan
 
         if "wk_plan_add" and "exercise_name" and "reps" and "weight" and "measurement" in request.form:
             wk_name_add = request.form.get("wk_plan_add")
@@ -286,7 +286,7 @@ def view():
 
             return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
         
-        # remove exercise from workout plan
+    # if user removes exercise from workout plan
         if "delete" in request.form:
 
             # get exercise to delete
@@ -298,11 +298,11 @@ def view():
 
             # remove exercise from workout plan
             db.execute("DELETE FROM workout_details WHERE track_ex = ? AND trackuser = ?", exercise_id, session["user_id"])
-
-            # get workout name to use in javascript 
+ 
+            # get workout name to use in javascript to reload table in view_plan.html
+            wk_name_add = request.form.get("get_wk_name")
             
-            
-            return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep)
+            return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
 
     return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises)
 
