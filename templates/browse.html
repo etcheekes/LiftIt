@@ -9,30 +9,32 @@
   
 <div class="container_brvp">
   <div class="search_input sticky">
-    <h2>Search Exercises</h2>
-      <form action="/browse" class="search_form">
-          <input type="text" name="exercise_name" placeholder="Exercise name" class="wide-select" autocomplete="off">
-          <input type="submit" value="Search">
-      </form>
-      <form action="/browse" class="search_form" id="muscle_form">
-          <select name="exercises" class="wide-select" id="muscle_search">
-          <option style="display:none;" value="0">Muscle</option>
-          {% for i in muscle%}
-              <option value="{{i['muscle']}}">{{i['muscle']}}</option>
-          {% endfor %}
-          </select>
-          <input type="submit" value="Search">
-      </form>
-      <form action="/browse" class="search_form" id="equipment_form">
-          <select name="equipments" class="wide-select" id="equipment_search">
-              <option style="display:none;" value="0">Equipment</option>
-          {% for i in equipment%}
-              <option value="{{i['equipment']}}">{{i['equipment']}}</option>
-          {% endfor %}
-          </select>
-          <input type="submit" value="Search">
-      </form>
+    <div class="div-min-width">
+      <h2>Search Exercises</h2>
+        <form action="/browse" class="search_form" id="name_form">
+            <input type="text" name="exercise_name" placeholder="Search by name" class="wide-select" autocomplete="off">
+            <input type="submit" value="Search">
+        </form>
+        <form action="/browse" class="search_form" id="muscle_form">
+            <select name="exercises" class="wide-select" id="muscle_search">
+            <option style="display:none;" value="0">Muscle</option>
+            {% for i in muscle%}
+                <option value="{{i['muscle']}}">{{i['muscle']}}</option>
+            {% endfor %}
+            </select>
+            <input type="submit" value="Search">
+        </form>
+        <form action="/browse" class="search_form" id="equipment_form">
+            <select name="equipments" class="wide-select" id="equipment_search">
+                <option style="display:none;" value="0">Equipment</option>
+            {% for i in equipment%}
+                <option value="{{i['equipment']}}">{{i['equipment']}}</option>
+            {% endfor %}
+            </select>
+            <input type="submit" value="Search">
+        </form>
     </div>
+  </div>
   <table class="search_results" hidden="false" id="hiddenField">
     <thead>
       <th>Exercise</th>
