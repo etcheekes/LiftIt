@@ -241,7 +241,7 @@ def view():
                 return render_template("error.html", error=error, url=url)
 
             # data on the user's created workouts 
-            users_wks = db.execute("SELECT exercises.exercise, exercises.muscle, exercises.equipment, workout_details.wk_name, workout_details.reps, CAST (workout_details.weight AS TEXT)AS weight, workout_details.measurement FROM exercises INNER JOIN workout_details ON workout_details.track_ex=exercises.id WHERE workout_details.trackuser = ? AND workout_details.wk_name = ? ", session["user_id"], wk_choice)
+            users_wks = db.execute("SELECT exercises.exercise, exercises.muscle, exercises.equipment, workout_details.wk_name, workout_details.reps, CAST (workout_details.weight AS TEXT)AS weight, workout_details.measurement, workout_details.track_row FROM exercises INNER JOIN workout_details ON workout_details.track_ex=exercises.id WHERE workout_details.trackuser = ? AND workout_details.wk_name = ? ", session["user_id"], wk_choice)
 
             # user submits workout that does not exist or has no exercises
             if len(users_wks) == 0:
@@ -292,16 +292,13 @@ def view():
             # get exercise to delete
             to_delete = request.form.get("delete")
 
-            # get id number for exercise
-            exercise_id = db.execute("SELECT id FROM exercises WHERE exercise = ? AND user_id = ?", to_delete, session["user_id"])
-            exercise_id = exercise_id[0]['id']
+            # remove exercise from user_workouts table
+            db.execute("DELETE FROM workout_details WHERE track_row = ?", int(to_delete))
 
-            # remove exercise from workout plan
-            db.execute("DELETE FROM workout_details WHERE track_ex = ? AND trackuser = ?", exercise_id, session["user_id"])
- 
             # get workout name to use in javascript to reload table in view_plan.html
             wk_name_add = request.form.get("get_wk_name")
             
+
             return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
 
     return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises)
@@ -407,3 +404,7 @@ def logout():
     # Redirect user to login form
     return render_template("login.html")
 
+@app.route("/test")
+def test():
+
+    return render_template("test.html")
