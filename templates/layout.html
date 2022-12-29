@@ -19,20 +19,41 @@
     <title>Workout: {% block title %}{% endblock %}</title>
     </head>
     <body>
-        <nav>
-                <a href="/" id="brand_name">Lift-It</a>
-            {% if session["user_id"] %}
-                <a href="/browse">Browse Exercises</a>
-                <a href="/name_workout">Manage Workouts</a>
-                <a href="/view_plan">Customise Workouts</a>
-                <!-- a href="#">Track</a -->
-                <!-- a href="#">History</a -->
-                <a href="/add_exercise">Create Exercise</a>
-                <a href="/logout">logout</a>
-            {%else%}
-                <a href="/register">Register</a>
-                <a href="/login">Login</a>
-            {% endif %}
+        <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light py-3">
+            <a href="/" class="navbar-brand" id="brand_name">Lift-It</a>
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar">
+                <div class="center_nav">
+                    <ul class="navbar-nav">
+                        {% if session["user_id"] %}
+                        <li class="nav-item">
+                            <a href="/browse">Browse Exercises</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/name_workout">Manage Workouts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/view_plan">Customise Workouts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/add_exercise">Create Exercise</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/logout">logout</a>
+                        </li>
+                        {%else%}
+                        <li class="nav-item">
+                            <a href="/register">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/login">Login</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
         </nav>
         <div>
             {% block main %}{% endblock %}

@@ -1,25 +1,24 @@
 /* customize navigation bar*/
-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    padding:20px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-    text-align: center;
-    background-color:whitesmoke;
+
+.center_nav {
+  margin: auto;
+  position: relative;
+  right: 2.5vw;
 }
 
 /* customize navigation bar links*/
-nav > a {
+.nav-item > a {
     font-weight: normal;
-    padding: 10px 10px;
+    padding: 20px 20px;
     color: rgb(53, 53, 53);
     text-decoration: none;
     font-weight: bold;
     font-size: 18px;
+}
+
+.navbar-toggler {
+  position: relative;
+  right: 1vw;
 }
 
 a:hover {
@@ -111,12 +110,16 @@ table {
     width: 80%;
     color: rgb(0, 0, 0);
     text-align: center;
-    table-layout: fixed;
+    table-layout: auto;
     overflow: auto;
     width: 100%;
   }
 
 thead:first-child{ border-bottom: 2px solid #555;}
+
+thead th:first-child {
+  width: 30%
+}
 
 thead th:last-child {
     width: 10%;
@@ -162,11 +165,12 @@ h1 > span {
 #brand_name {
   display: inline;
   position: relative;
-  right: 2vw;
+  left: 1vw;
   font-size: 1.4rem;
   font-weight: 700;
   color: crimson;
 }
+
 
 /* customise intro for non-logged in users */
 #generic_intro {
@@ -186,7 +190,7 @@ button {
 /* adjust location of register and login links to look more central */
 a[href="/register"], a[href="/login"]  {
   position: relative;
-  right: 1.4vw;
+  right: 0.4vw;
 }
 
 /* style login and register forms. Also used for create exercise feature */
