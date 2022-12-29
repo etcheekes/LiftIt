@@ -25,9 +25,8 @@ a:hover {
   color: crimson;
 }
 
-
+/* stop body colliding with navigation bar*/
 body {
-  /* stop body colliding with navigation bar*/
   position: relative;
   padding: 30px;
   top: 80px;
@@ -117,13 +116,11 @@ table {
 
 thead:first-child{ border-bottom: 2px solid #555;}
 
+
 thead th:first-child {
-  width: 30%
+  width: 35%
 }
 
-thead th:last-child {
-    width: 10%;
-  }
 
 tbody tr:nth-child(odd) {
   background-color: white;
@@ -140,7 +137,7 @@ th {
 }
 
 .shorten_column {
-  width: 10%;
+  width: 15%;
 }
 
 /* make items sticky despite being in Grid Layout being in */
@@ -187,16 +184,17 @@ button {
   border-radius: 5px;
 }
 
-/* adjust location of register and login links to look more central */
-a[href="/register"], a[href="/login"]  {
-  position: relative;
-  right: 0.4vw;
+/* customise bootstrap button */
+.btn {
+  padding: 1.3px;
 }
 
 /* style login and register forms. Also used for create exercise feature */
 .log_reg {
   width: 300px;
-  position: relative;
+  position: fixed;
+  left: 50%; /* Position the element 50% from the left edge of the viewport */
+  transform: translate(-50%); /* Offset the element by 50% of its own width, so it is centered horizontally */
   text-align: center;
   padding: 20px;
   border: 1px solid rgb(193, 193, 193);
@@ -242,6 +240,7 @@ a[href="/register"], a[href="/login"]  {
 }
 
 /* style searching in browse and view_plan pages */
+
 .search_form {
   padding: 8px 8px
 }
@@ -265,6 +264,11 @@ a[href="/register"], a[href="/login"]  {
 
 .search_form > input[type="submit"]:hover {
   background-color: rgb(255, 26, 72);
+}
+
+#name_form {
+  /* even spaces between inputs in browse.html */
+  margin-bottom: 8px;
 }
 
 /* style add exercise to workout plan */
@@ -296,6 +300,11 @@ a[href="/register"], a[href="/login"]  {
 
 .add_exercise > input[type="submit"]:hover {
   background-color: rgb(255, 26, 72);
+}
+
+/* minimum width for div */
+.div-min-width {
+  min-width: 250px;
 }
 
 /* style manage workout */
@@ -331,6 +340,7 @@ a[href="/register"], a[href="/login"]  {
   width: 80%;
   text-align: center;
   margin-top: 3%;
+  margin-bottom: 3%;
   border: none;
   border-radius: 5px;
   cursor: pointer;
