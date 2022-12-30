@@ -178,11 +178,6 @@ h1 > span {
 
 }
 
-/* default style for buttons */
-button {
-  border: none;
-  border-radius: 5px;
-}
 
 /* customise bootstrap button */
 .btn {
@@ -376,5 +371,22 @@ td > form > button:hover {
   color: rgb(255, 26, 72);
 }
 
+button {
+  border: none;
+  border-radius: 5px;
+}
 
+td button {
+  background: none;
+}
+
+td button:hover {
+  color: crimson;
+}
+
+/* text-box colour change form text for viewplan customise workout table */
+
+td input[type="text"] {
+  background-color: rgb(255, 156, 158);
+}
 
