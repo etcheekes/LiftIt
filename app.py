@@ -286,6 +286,61 @@ def view():
 
             return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
         
+    # if user updates reps
+
+        if "rep_number" in request.form:
+
+            # get new rep number and row id
+            update = request.form.get("rep_number")
+            row_id = request.form.get("rep_row")
+
+            # error if not numeric (todo) or blank
+
+            # update rep number for that exercise in user_workouts table
+            db.execute("UPDATE workout_details SET reps = ? WHERE track_row = ?", int(update), int(row_id))
+
+            # get workout name to use in javascript to reload table in view_plan.html
+            wk_name_add = request.form.get("get_wk_name")
+
+            return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
+
+    # if user updates weight
+
+        if "weight_number" in request.form:
+
+            # get new weight number and row id
+            update = request.form.get("weight_number")
+            row_id = request.form.get("weight_row")
+
+            # error if not numeric (todo) or blank
+
+            # update weight number for that exercise in user_workouts table
+            db.execute("UPDATE workout_details SET weight = ? WHERE track_row = ?", int(update), int(row_id))
+
+            # get workout name to use in javascript to reload table in view_plan.html
+            wk_name_add = request.form.get("get_wk_name")
+
+            return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
+    
+    # if user updates measurement
+
+        if "measurement_update" in request.form:
+
+            # get new measurement value and row id
+
+            update = request.form.get("measurement_update")
+            row_id = request.form.get("measurement_row")
+
+            # error if not string (todo) or blank
+
+            # update measurement for that exercise in user_workouts
+            db.execute("UPDATE workout_details SET measurement = ? WHERE track_row = ?", update, int(row_id))
+
+            # get workout name to use in javascript to reload table in view_plan.html
+            wk_name_add = request.form.get("get_wk_name")
+
+            return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
+
     # if user removes exercise from workout plan
         if "delete" in request.form:
 
@@ -297,7 +352,7 @@ def view():
 
             # get workout name to use in javascript to reload table in view_plan.html
             wk_name_add = request.form.get("get_wk_name")
-            
+        
 
             return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
 
