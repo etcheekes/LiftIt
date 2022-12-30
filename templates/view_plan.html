@@ -48,7 +48,7 @@
                 <th>Exercise</th>
                 <th>Muscle</th>
                 <th>Equipment</th>
-                <th>Amount</th>
+                <th>Repetitions</th>
                 <th>Weight</th>
                 <th>Remove</th>
             </thead>
@@ -58,8 +58,36 @@
                     <td>{{i['exercise']}}</td>
                     <td>{{i['muscle']}}</td>
                     <td>{{i['equipment']}}</td>
-                    <td>{{i['reps']}}</td>
-                    <td>{{i['weight'] + ' ' + i['measurement']}}</td>
+                    <!-- allow user to update reps for exercise -->
+                    <td>
+                        <button type="submit" class="access_reps">{{i['reps']}}</button>
+                        <form action="/view_plan" method="post" style="display: none;"> 
+                            <input type="text" name="rep_number">
+                            <input type="hidden" name="rep_row" value="{{i['track_row']}}">
+                            <input type="hidden" name="get_wk_name" value="{{i['wk_name']}}">
+                            <input type="submit" value="update">
+                        </form>
+                    </td>
+                    <td>
+                        <span>
+                            <button type="submit" class="access_weight">{{i['weight']}}</button> 
+                            <form action="/view_plan" method="post" style="display:none;">
+                                <input type="text" name="weight_number">
+                                <input type="hidden" name="weight_row" value="{{i['track_row']}}">
+                                <input type="hidden" name="get_wk_name" value="{{i['wk_name']}}">
+                                <input type="submit" value="update">
+                            </form>
+                        </span>
+                        <span>
+                            <button type="submit" class="access_measurement">{{i['measurement']}}</button>
+                            <form action="/view_plan" method="post" style="display:none;">
+                                <input type="text" name="measurement_update">
+                                <input type="hidden" name="measurement_row" value="{{i['track_row']}}">
+                                <input type="hidden" name="get_wk_name" value="{{i['wk_name']}}">
+                                <input type="submit" value="update">
+                            </form>
+                        </span>
+                    </td>
                     <!-- allow user to delete exercise from workout -->
                     <td>
                         <form action="/view_plan" method="post" onsubmit="return conDelete()">
@@ -88,6 +116,12 @@
                 submitForm("retrieve_wk");
             </script>
         {% endif %}
+        <!-- reveal forms when reps, weight, or measuremant clicked -->
+        <script>
+            revealClassForm("access_reps");
+            revealClassForm("access_weight");
+            revealClassForm("access_measurement");
+        </script>
     </div>
   </div>
 {% endblock %}
