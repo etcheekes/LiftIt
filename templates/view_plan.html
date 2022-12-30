@@ -60,31 +60,31 @@
                     <td>{{i['equipment']}}</td>
                     <!-- allow user to update reps for exercise -->
                     <td>
-                        <button type="submit" class="access_reps">{{i['reps']}}</button>
+                        <button type="submit" class="access_reps" data-toggle="tooltip" title="Click to change">{{i['reps']}}</button>
                         <form action="/view_plan" method="post" style="display: none;"> 
-                            <input type="text" name="rep_number">
+                            <input type="number" name="rep_number">
                             <input type="hidden" name="rep_row" value="{{i['track_row']}}">
                             <input type="hidden" name="get_wk_name" value="{{i['wk_name']}}">
-                            <input type="submit" value="update">
+                            <input type="submit" value="ok">
                         </form>
                     </td>
                     <td>
                         <span>
-                            <button type="submit" class="access_weight">{{i['weight']}}</button> 
+                            <button type="submit" class="access_weight" data-toggle="tooltip" title="Click to change">{{i['weight']}}</button> 
                             <form action="/view_plan" method="post" style="display:none;">
-                                <input type="text" name="weight_number">
+                                <input type="number" name="weight_number">
                                 <input type="hidden" name="weight_row" value="{{i['track_row']}}">
                                 <input type="hidden" name="get_wk_name" value="{{i['wk_name']}}">
-                                <input type="submit" value="update">
+                                <input type="submit" value="ok">
                             </form>
                         </span>
                         <span>
-                            <button type="submit" class="access_measurement">{{i['measurement']}}</button>
+                            <button type="submit" class="access_measurement" data-toggle="tooltip" title="Click to change">{{i['measurement']}}</button>
                             <form action="/view_plan" method="post" style="display:none;">
                                 <input type="text" name="measurement_update">
                                 <input type="hidden" name="measurement_row" value="{{i['track_row']}}">
                                 <input type="hidden" name="get_wk_name" value="{{i['wk_name']}}">
-                                <input type="submit" value="update">
+                                <input type="submit" value="ok">
                             </form>
                         </span>
                     </td>

@@ -31,7 +31,7 @@ function conDelete() {
   return confirm("Confirm removal")
 }
 
-// reveal form by class
+// when button is clicked reveal/hide the form with className
 
 function revealClassForm(className) {
   // obtain all elements with a specific class name
@@ -39,13 +39,19 @@ function revealClassForm(className) {
           
   // add event listener to each element with this class and reveal form tag upon clicking
   for (let i = 0; i < getElements.length; i++) {
-      getElements[i].addEventListener("click", function() {
-          const pa = this.parentNode; // Get the parent <td> element of the button
-          const forms = pa.getElementsByTagName("form"); // Get the <form> elements in the <td> element
-          if (forms.length > 0) {  // Make sure there is at least one form element
-              forms[0].style.display = "block";  // Set the display property of the first form element to "block"
-          } 
-      });
-    }
+    getElements[i].addEventListener("click", function() {
+      // Get the parent <td> element of the button
+      const pa = this.parentNode;
+      // Get the <form> in the <td> element
+      const forms = pa.getElementsByTagName("form");
+        // toggle form display
+        if (forms[0].style.display === "none") {
+          forms[0].style.display = "inline";
+        }
+        else {
+          forms[0].style.display = "none";
+          //undo_buttons[1].style.display = "none"
+        }
+    });
   }
-
+}

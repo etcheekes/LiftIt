@@ -162,7 +162,7 @@ h1 > span {
 #brand_name {
   display: inline;
   position: relative;
-  left: 1vw;
+  left: 2vw;
   font-size: 1.4rem;
   font-weight: 700;
   color: crimson;
@@ -175,7 +175,6 @@ h1 > span {
   color: crimson;
   position: relative;
   top: 25vh;
-
 }
 
 
@@ -386,7 +385,9 @@ td button:hover {
 
 /* text-box colour change form text for viewplan customise workout table */
 
-td input[type="text"] {
+td input[type="text"], input[type="number"] {
   background-color: rgb(255, 156, 158);
+  width: 4vw;
+  min-width: 45px;
 }
 
