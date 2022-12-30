@@ -295,6 +295,10 @@ def view():
             row_id = request.form.get("rep_row")
 
             # error if not numeric (todo) or blank
+            if len(update) == 0:
+                url = request.url
+                error = "Number value required"
+                return render_template("error.html", error=error, url=url)
 
             # update rep number for that exercise in user_workouts table
             db.execute("UPDATE workout_details SET reps = ? WHERE track_row = ?", int(update), int(row_id))
@@ -313,6 +317,10 @@ def view():
             row_id = request.form.get("weight_row")
 
             # error if not numeric (todo) or blank
+            if len(update) == 0 or update.isnumeric() == False:
+                url = request.url
+                error = "Number value required"
+                return render_template("error.html", error=error, url=url)
 
             # update weight number for that exercise in user_workouts table
             db.execute("UPDATE workout_details SET weight = ? WHERE track_row = ?", int(update), int(row_id))
@@ -332,6 +340,10 @@ def view():
             row_id = request.form.get("measurement_row")
 
             # error if not string (todo) or blank
+            if len(update) == 0:
+                url = request.url
+                error = "Input required"
+                return render_template("error.html", error=error, url=url)
 
             # update measurement for that exercise in user_workouts
             db.execute("UPDATE workout_details SET measurement = ? WHERE track_row = ?", update, int(row_id))
