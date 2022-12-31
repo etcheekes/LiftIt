@@ -1,5 +1,5 @@
 # LiftIt 
-#### Video Demo: TO ADD
+#### Video Demo: https://www.youtube.com/watch?v=JCkquwHqHI0
 #### Description:
 
 Lift-It is a dynamic workout planner web application that lets users browse exercises, make exercises, and create personal workout plans. The frontend uses HTML, CSS, and JavaScript while jinja was used to dynamically render pages. Each page is responsive and adapts to different screen sizes. The backend uses python and flask as its web application framework while SQLite is the database engine used. The website was developed on a virtual environment using Visual Studio Code as the IDE.
