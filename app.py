@@ -117,7 +117,7 @@ def browse():
         category_to_display = db.execute("SELECT * FROM exercises WHERE (exercise LIKE ?) AND user_id = ?", "%" + exercise_name + "%", session["user_id"])
         return render_template("browse.html", muscle=muscle, equipment=equipment, category_to_display=category_to_display, reveal_table=reveal_table)
 
-    return render_template("browse.html", muscle=muscle, equipment=equipment)
+    return render_template("browse.html", muscle=muscle, equipment=equipment, category_to_display=[])
 
 
 @app.route("/add_exercise", methods=["GET","POST"])
@@ -452,14 +452,9 @@ def delete():
         elif "equipment" in request.form:
             equipment_display = request.form.get("equipment")
             return render_template("browse.html", equipment_display=equipment_display, muscle=muscle, equipment=equipment, counter=counter)
-        
+        else:
+            return render_template("browse.html", muscle=muscle, equipment=equipment, counter=counter)
 
-        # page is rendered depending on the category that the user inputed to browse exercises
-        # if variable exists
-        #if muscle_display:
-        #    return render_template("browse.html", muscle_display=muscle_display, muscle=muscle, equipment=equipment, counter=counter)
-        #elif equipment_display:
-        #    return render_template("browse.html", equipment_display=equipment_display, muscle=muscle, equipment=equipment, counter=counter)
 
 
 @app.route("/logout")

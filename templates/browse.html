@@ -37,7 +37,9 @@
   </div>
   <table class="search_results" hidden="false" id="hiddenField">
     <thead>
-      <th>Exercise</th>
+      <th> 
+        <button type="submit" id="alphabetize" title="Order" value="unordered">Exercise</button>
+      </th>
       <th>Muscle</th>
       <th>Equipment</th>
       <th>Remove</th>
@@ -60,10 +62,11 @@
                     <input type="hidden" name="equipment" value="{{i['equipment']}}">
                   {% endif %}
                   <button type="submit">Delete</button>
-              </form>
+                </form>
             </td>
         </tr>
       {% endfor %}
+      
   </tbody>
   </table> 
       <!-- show table once user submits search info -->
@@ -78,7 +81,7 @@
         <script>
           // change select option name
           changeOption('muscle_search', '{{ muscle_display }}');
-          // apply the select option change (TODO)
+          // apply the select option change
           submitForm("muscle_form");
           // breaks infinite loop of reloading page
           counter = counter + 1
@@ -87,17 +90,20 @@
         <script>
           // change select option name
           changeOption('equipment_search', '{{ equipment_display }}');
-          // apply the select option change (TODO)
+          // apply the select option change
           submitForm("equipment_form");
           // breaks infinite loop of reloading page
-          counter = counter + 1
+          counter = counter + 1;
         </script>
       {% endif %}
+      <!-- allow user to alphabetically order by exercise, changes are dynamic -->
+      <script>
+        // for customising the table, once rendered, dynamically
+        let categoryToDisplay = '{{ category_to_display|tojson }}';
+        // returned as ordered
+        orderTable(categoryToDisplay, "exercise", "tbody");
+    
+    </script>
 </div>
-
-
-
-
-
 
 {% endblock %}
