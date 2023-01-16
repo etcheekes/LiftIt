@@ -102,8 +102,9 @@ function orderTable(data, property, parentElement) {
 
             // create delete form
             const form = document.createElement("form");
-            form.setAttribute("action", "/delete_exercise_from_database");
+            form.setAttribute("action", "/dynamic_delete_exercise_from_database");
             form.setAttribute("method", "post");
+            form.setAttribute("onsubmit", "return conDelete()");
             // create input elements for delete form
             const delInput = document.createElement("input");
             delInput.setAttribute("type", "hidden");
@@ -130,6 +131,20 @@ function orderTable(data, property, parentElement) {
 
             // append row to tbody
             tableBody.appendChild(newRow);
+
+            // add event listener that uses fetch to remove exercise from database without having to reload page
+            form.addEventListener("submit", (event) => {
+                // prevent form submitting normally
+                event.preventDefault();
+                // use fetch
+                const formData = new FormData(event.target);
+                fetch("/delete_exercise_from_database", {
+                    'method': 'POST',
+                    'body': formData
+                })
+                // remove row from user's view
+                .then(() => newRow.remove());
+            });
         }
     })
     
