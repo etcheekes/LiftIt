@@ -82,6 +82,8 @@ function orderTable(data, property, parentElement) {
         
         // obtain reference to table body
         const tableBody = document.querySelector(parentElement);
+
+        // clear table
         removeChildNodes(tableBody);
 
         // create, fill, and place rows in table
@@ -97,7 +99,28 @@ function orderTable(data, property, parentElement) {
             const cell3 = document.createElement("td");
             cell3.textContent = ordered[row].equipment;
             const cell4 = document.createElement("td");
-            cell4.textContent = "Delete";
+
+            // create delete form
+            const form = document.createElement("form");
+            form.setAttribute("action", "/delete_exercise_from_database");
+            form.setAttribute("method", "post");
+            // create input elements for delete form
+            const delInput = document.createElement("input");
+            delInput.setAttribute("type", "hidden");
+            delInput.setAttribute("name", "delete");
+            // obtain id number for the row, this is used to identify the row to delete from the server
+            const exerciseId = ordered[row].id;
+            delInput.setAttribute("value", exerciseId);
+            // create button
+            const delButton = document.createElement("button");
+            delButton.setAttribute("type", "submit");
+            delButton.textContent = "Delete";
+            // append inputs to form
+            form.appendChild(delInput);
+            form.appendChild(delButton);
+            
+            // append delete form to cell 4
+            cell4.appendChild(form);
 
             // append cells to row
             newRow.appendChild(cell1);
@@ -149,30 +172,4 @@ function removeChildNodes(element) {
     while (element.firstChild) {
         element.removeChild(element.firstChild);
     }
-}
-
-// populate table in browse.html
-function populateBrowseTable() {
-
-    // reference needed elements
-    browseResults = document.querySelector('.search');
-    nameForm = document.querySelector('#name_form');
-    muscleForm = document.querySelector('#muscle_form');
-    equipmentForm = document.querySelector('#equipment_form');
-    alphabetize = document.querySelector('#alphabetize');
-
-    // event listener for forms
-    const formArray = [nameForm, muscleForm, equipmentForm, alphabetize];
-    formArray.forEach(function (elem) {
-        elem.addEventListener('submit', (event) => {
-            //event.preventDefault();
-            console.log("hello")
-            // stop normal form action from occurring
-            // create table row and cells
-            //const newRow = document.createElement("tr");
-            //const cell1 = document.createElement("td");
-            //const cell2 = document.createElement("td");
-            //const cell3 = document.createElement("td");
-        })
-    })
 }

@@ -448,12 +448,12 @@ def delete():
         # get category (i.e., equipment or muscle) to use so we can re-display the same table after the user deletes a row
         if "muscle" in request.form:
             muscle_display = request.form.get("muscle")
-            return render_template("browse.html", muscle_display=muscle_display, muscle=muscle, equipment=equipment, counter=counter)
+            return render_template("browse.html", muscle_display=muscle_display, muscle=muscle, equipment=equipment, counter=counter, category_to_display=[])
         elif "equipment" in request.form:
             equipment_display = request.form.get("equipment")
-            return render_template("browse.html", equipment_display=equipment_display, muscle=muscle, equipment=equipment, counter=counter)
+            return render_template("browse.html", equipment_display=equipment_display, muscle=muscle, equipment=equipment, counter=counter, category_to_display=[])
         else:
-            return render_template("browse.html", muscle=muscle, equipment=equipment, counter=counter)
+            return render_template("browse.html", muscle=muscle, equipment=equipment, counter=counter, category_to_display=[])
 
 
 
