@@ -45,7 +45,9 @@
         <!-- show table -->
         <table class="search_results" hidden="false" id="hiddenField">
             <thead>
-                <th>Exercise</th>
+                <th> 
+                    <button type="submit" id="alphabetize" title="Order" value="unordered">Exercise</button>
+                </th>
                 <th>Muscle</th>
                 <th>Equipment</th>
                 <th>Repetitions</th>
@@ -69,6 +71,7 @@
                         </form>
                     </td>
                     <td>
+                        <!-- allow user to update weight number for exercise -->
                         <span>
                             <button type="submit" class="access_weight" data-toggle="tooltip" title="Click to change">{{i['weight']}}</button> 
                             <form action="/view_plan" method="post" style="display:none;">
@@ -78,6 +81,7 @@
                                 <input type="submit" value="ok">
                             </form>
                         </span>
+                        <!-- allow user to update weight measurement for exercise -->
                         <span>
                             <button type="submit" class="access_measurement" data-toggle="tooltip" title="Click to change">{{i['measurement']}}</button>
                             <form action="/view_plan" method="post" style="display:none;">
@@ -122,6 +126,14 @@
             revealClassForm("access_weight");
             revealClassForm("access_measurement");
         </script>
+        {% if users_wks %}
+            <script>
+                // for customising the table, once rendered, dynamically
+                let users_wks = '{{ users_wks|tojson }}';
+                // returned as ordered
+                orderTablePlan(users_wks, "exercise", "tbody");
+            </script>
+        {% endif %}
     </div>
   </div>
 {% endblock %}
