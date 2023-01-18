@@ -391,3 +391,7 @@ td input[type="text"], input[type="number"] {
   min-width: 45px;
 }
 
+/* style success flash messages */
+.flash_message {
+    text-align: center;
+}
