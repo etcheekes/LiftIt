@@ -1,7 +1,7 @@
 # simplifies python SQL querying
 from cs50 import SQL
 # allow sessions and cookies
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, session, flash 
 from flask_session import Session
 # security for passwords
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -149,6 +149,7 @@ def add_exercise():
         # Update database with new exercise
         db.execute("INSERT INTO exercises (exercise, muscle, equipment, user_id) VALUES (?, ?, ?, ?)", store_name, store_muscle, store_equip, session["user_id"])
 
+        flash("Exercise successfully added")
         return render_template("add_exercise.html")
 
     # obtain all possible muscle and equipment categories
@@ -187,6 +188,8 @@ def name_workout():
                     return render_template("error.html", error=error, url=url)
             
             db.execute("INSERT INTO users_wk_name (user, wk_name) VALUES (?, ?)", session["user_id"], wk_name)
+            flash("Workout created! See Customise Workouts.")
+            return render_template("name_workout.html", user_workouts=user_workouts)
         
         # delete workout
         if "wk_delete" in request.form:
@@ -197,6 +200,9 @@ def name_workout():
                 return render_template("error.html", error=error, url=url)
             db.execute("DELETE FROM users_wk_name WHERE wk_name = ? AND user = ?", wk_delete, session["user_id"])
             db.execute("DELETE FROM workout_details WHERE wk_name = ? AND trackuser = ?", wk_delete, session["user_id"])
+            flash("Workout deleted")
+            return render_template("name_workout.html", user_workouts=user_workouts)
+
 
 
         return render_template("name_workout.html", user_workouts=user_workouts)
