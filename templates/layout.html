@@ -55,6 +55,14 @@
                 </div>
             </div>
         </nav>
+            <!-- message flashes to alert users when a successful action on the website has been taken -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="flash_message">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         <div>
             {% block main %}{% endblock %}
         </div>
