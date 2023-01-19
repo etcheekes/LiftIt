@@ -46,7 +46,7 @@
         <table class="search_results" hidden="false" id="hiddenField">
             <thead>
                 <th> 
-                    <button type="submit" id="alphabetize" title="Order" value="unordered">Exercise</button>
+                    <button type="submit" id="order" title="Order" value="unordered">Exercise</button>
                 </th>
                 <th>Muscle</th>
                 <th>Equipment</th>
@@ -54,7 +54,7 @@
                 <th>Weight</th>
                 <th>Remove</th>
             </thead>
-            <tbody>
+            <tbody id="order_rows">
             {% for i in users_wks %}
                 <tr>
                     <td>{{i['exercise']}}</td>
@@ -94,7 +94,7 @@
                     </td>
                     <!-- allow user to delete exercise from workout -->
                     <td>
-                        <form action="/view_plan" method="post" onsubmit="return conDelete()">
+                        <form action="/view_plan" method="post" class="delete_button" onsubmit="return conDelete()">
                             <input type="hidden" name="delete" value="{{i['track_row']}}">
                             <input type="hidden" name="get_wk_name" value="{{i['wk_name']}}">
                             <button type="submit">Delete</button>
@@ -127,11 +127,16 @@
             revealClassForm("access_measurement");
         </script>
         {% if users_wks %}
+            <!-- dynamically altering table -->
             <script>
+                // order table by exercise name
+                orderTable(0)
+                // delete row
+                deleteRowFromTable('.delete_button')
                 // for customising the table, once rendered, dynamically
-                let users_wks = '{{ users_wks|tojson }}';
+                // let users_wks = '{{ users_wks|tojson }}';
                 // returned as ordered
-                orderTablePlan(users_wks, "exercise", "tbody");
+                // orderTablePlan(users_wks, "exercise", "tbody");
             </script>
         {% endif %}
     </div>

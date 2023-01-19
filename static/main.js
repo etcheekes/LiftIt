@@ -148,9 +148,101 @@ function orderTableBrowse(data, property, parentElement) {
     
 }
 
+function orderTable(col_num) {
+    // obtain reference to button
+    alphabetize = document.querySelector('#order')
+
+    // event listener for button
+    alphabetize.addEventListener('click', () => {
+
+    let tbody, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+
+    tbody = document.querySelector('#order_rows')
+    switching = true;
+
+    // set sorting direction ascending
+    dir = "asc"
+
+    // loop until no switching has been done
+    while (switching) {
+        // no switching done by default
+        switching = false;
+        rows = tbody.rows;
+        // loop through tbody rows
+        for (i = 0; i < rows.length - 1; i += 1) {
+            // by default no switch should occur
+            shouldSwitch = false
+            // compare element from current row and one from next
+            x = rows[i].querySelectorAll("TD")[col_num];
+            y = rows[i + 1].querySelectorAll("TD")[col_num];
+            // check if two rows should switch place, direct is determined
+            // by whether dir = asc or desc
+            if (dir === "asc") {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                  //mark switch and break loop:
+                  shouldSwitch= true;
+                  break;
+                }
+              } else if (dir === "desc") {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                  //mark switch and break loop:
+                  shouldSwitch = true;
+                  break;
+            }
+          }
+        }
+        if (shouldSwitch) {
+            //if switch marked, make switch, and record a switch being done
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            // increase switchcount by 1 each time a switch is done
+            switchcount += 1;
+        } else {
+            // reverse dir value if no switching has done (indicates table has already been sorted the opposing direction)
+            if (switchcount === 0 && dir === "asc") {
+                dir = "desc";
+                switching = true;
+            }
+        }
+    }
+})
+} 
+
+function deleteRowFromTable(buttonClass) {
+
+    // obtain array of references to delete buttons 
+    deleteButtons = document.querySelectorAll(buttonClass)
+
+    // add event listener to each button
+    deleteButtons.forEach(item => {
+        item.addEventListener('click', (event) => {
+            // prevent default form submission
+            event.preventDefault();
+            // confirm deletion 
+            if(!confirm("Confirm removal")){
+                return;
+            };
+            // obtain parent form element for button
+            form = event.target.parentElement;
+            // use fetch to submit form data asynchronously
+            const formData = new FormData(form);
+            fetch("/view_plan", {
+                'method': 'POST',
+                'body': formData
+            })
+            // remove row from user's view once deleted from database
+            .then(() => {
+                // obtain row element
+                rowDelete = event.target.closest('tr');
+                // remove row element
+                rowDelete.remove()});
+            })
+    })
+}
+
 // order table by exercise name alphabetically in view_plan.html
 
-function orderTablePlan(data, property, parentElement) {
+/*function orderTablePlan(data, property, parentElement) {
 
     // Obtain reference to button
     alphabetize = document.querySelector('#alphabetize');
@@ -447,7 +539,23 @@ function orderTablePlan(data, property, parentElement) {
                         'body': formData
                     })
                     // remove row from user's view once deleted from database
-                    .then(() => newRow.remove());
+                    .then(() => {
+                        newRow.remove()})
+                    // remove element from ordered from the browser data, so if user orders again, the data is updated
+                    .then(() => {
+                    // Obtain unique track_row number
+                    let identifier = parseInt(formData.get('delete'))
+                    // remove array element whose object property for track_row matches the identifier
+                    let i = 0;
+                    while (i < ordered.length) {
+                        if (ordered[i].track_row === identifier) {
+                            ordered.splice(i, 1);
+                        }
+                        else {
+                            i += 1;
+                        }
+                    }
+                    })
                 });
                 
                 // append delete form to cell 4
@@ -462,7 +570,7 @@ function orderTablePlan(data, property, parentElement) {
         }
     })
     
-}
+}*/
 
 function ascendingOrder(data, property) {
     // parse to JSON
