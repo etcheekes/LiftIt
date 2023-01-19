@@ -63,7 +63,7 @@
                     <!-- allow user to update reps for exercise -->
                     <td>
                         <button type="submit" class="access_reps" data-toggle="tooltip" title="Click to change">{{i['reps']}}</button>
-                        <form action="/view_plan" method="post" style="display: none;"> 
+                        <form action="/view_plan" method="post" class="alter_cell_value" style="display: none;"> 
                             <input type="number" name="rep_number">
                             <input type="hidden" name="rep_row" value="{{i['track_row']}}">
                             <input type="hidden" name="get_wk_name" value="{{i['wk_name']}}">
@@ -74,7 +74,7 @@
                         <!-- allow user to update weight number for exercise -->
                         <span>
                             <button type="submit" class="access_weight" data-toggle="tooltip" title="Click to change">{{i['weight']}}</button> 
-                            <form action="/view_plan" method="post" style="display:none;">
+                            <form action="/view_plan" method="post" class="alter_cell_value" style="display:none;">
                                 <input type="number" name="weight_number">
                                 <input type="hidden" name="weight_row" value="{{i['track_row']}}">
                                 <input type="hidden" name="get_wk_name" value="{{i['wk_name']}}">
@@ -84,7 +84,7 @@
                         <!-- allow user to update weight measurement for exercise -->
                         <span>
                             <button type="submit" class="access_measurement" data-toggle="tooltip" title="Click to change">{{i['measurement']}}</button>
-                            <form action="/view_plan" method="post" style="display:none;">
+                            <form action="/view_plan" method="post" class="alter_cell_value" style="display:none;">
                                 <input type="text" name="measurement_update">
                                 <input type="hidden" name="measurement_row" value="{{i['track_row']}}">
                                 <input type="hidden" name="get_wk_name" value="{{i['wk_name']}}">
@@ -120,23 +120,17 @@
                 submitForm("retrieve_wk");
             </script>
         {% endif %}
-        <!-- reveal forms when reps, weight, or measuremant clicked -->
-        <script>
-            revealClassForm("access_reps");
-            revealClassForm("access_weight");
-            revealClassForm("access_measurement");
-        </script>
         {% if users_wks %}
             <!-- dynamically altering table -->
             <script>
                 // order table by exercise name
-                orderTable(0)
+                orderTable(0);
                 // delete row
-                deleteRowFromTable('.delete_button')
-                // for customising the table, once rendered, dynamically
-                // let users_wks = '{{ users_wks|tojson }}';
-                // returned as ordered
-                // orderTablePlan(users_wks, "exercise", "tbody");
+                deleteRowFromTable('.delete_button', '/view_plan');
+                // allow users to dynamically change values
+                alterTableRowCell('.access_reps', '/view_plan', "rep_number");
+                alterTableRowCell('.access_weight', '/view_plan', "weight_number");
+                alterTableRowCell('.access_measurement', '/view_plan', "measurement_update");
             </script>
         {% endif %}
     </div>

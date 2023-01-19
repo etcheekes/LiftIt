@@ -38,13 +38,13 @@
   <table class="search_results" hidden="false" id="hiddenField">
     <thead>
       <th> 
-        <button type="submit" id="alphabetize" title="Order" value="unordered">Exercise</button>
+        <button type="submit" id="order" title="Order" value="unordered">Exercise</button>
       </th>
       <th>Muscle</th>
       <th>Equipment</th>
       <th>Remove</th>
     </thead>
-    <tbody>
+    <tbody id="order_rows">
       {% for i in category_to_display%}
         <tr>
             <td>{{i['exercise']}}</td>
@@ -53,7 +53,7 @@
             <!-- allow user to delete exercise from workout -->
             <!-- obtain unique id for row that contains the exercise -->
             <td>
-                <form action="/delete_exercise_from_database" method="post" onsubmit="return conDelete()">
+                <form action="/delete_exercise_from_database" method="post" class="delete_button" onsubmit="return conDelete()">
                   <input type="hidden" name="delete" value="{{i['id']}}">
                   <!-- obtain reference to whether the user searched by muscle or equipment -->
                   {% if muscle_display %}
@@ -98,12 +98,10 @@
       {% endif %}
       <!-- allow user to alphabetically order by exercise, changes are dynamic -->
       <script>
-        // for customising the table, once rendered, dynamically
-        // note certain render templates will return categoryToDisplay as an empty [], this is to avoid an error 
-        // TypeError: Object of type Undefined is not JSON serializable from the below code line
-        let categoryToDisplay = '{{ category_to_display|tojson }}';
-        // returned as ordered
-        orderTableBrowse(categoryToDisplay, "exercise", "tbody");
+        // allow user to order by clicking the Exercise <th> element
+        orderTable(0);
+        // allow dynamic deleting of rows
+        deleteRowFromTable('.delete_button', '/delete_exercise_from_database');
     
     </script>
 </div>
