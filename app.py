@@ -345,10 +345,10 @@ def view():
             update = request.form.get("measurement_update")
             row_id = request.form.get("measurement_row")
 
-            # error if not string (todo) or blank
-            if len(update) == 0:
+            # error if not string or blank
+            if len(update) == 0 or update.isnumeric():
                 url = request.url
-                error = "Input required"
+                error = "Input missing or non-text input detected"
                 return render_template("error.html", error=error, url=url)
 
             # update measurement for that exercise in user_workouts
