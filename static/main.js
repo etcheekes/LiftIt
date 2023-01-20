@@ -31,31 +31,6 @@ function conDelete() {
   return confirm("Confirm removal")
 }
 
-// when button is clicked reveal/hide the form with className
-
-function revealClassForm(className) {
-  // obtain all elements with a specific class name
-  /*getElements = document.getElementsByClassName(className);
-          
-  // add event listener to each element with this class and reveal form tag upon clicking
-  for (let i = 0; i < getElements.length; i++) {
-    getElements[i].addEventListener("click", function() {
-      // Get the parent <td> element of the button
-      const pa = this.parentNode;
-      // Get the <form> in the <td> element
-      const forms = pa.getElementsByTagName("form");
-        // toggle form display
-        if (forms[0].style.display === "none") {
-          forms[0].style.display = "inline";
-        }
-        else {
-          forms[0].style.display = "none";
-        }
-    });
-  }
-  */
-}
-
 
 // order table by exercise name alphabetically in browse.html
 
@@ -248,6 +223,7 @@ function alterTableRowCell(buttonClass, endpoint, cellValueName) {
     // obtain array of references to buttons that reveal a hidden form once clicked
     selectedButtons = document.querySelectorAll(buttonClass)
 
+    // add event listener to each button
     selectedButtons.forEach(item => {
         item.addEventListener('click', handleForm)
     })
@@ -258,38 +234,34 @@ function alterTableRowCell(buttonClass, endpoint, cellValueName) {
         const btn = event.target;
         const btnParent = btn.parentNode;
         const form = btnParent.querySelector('form');
+
+        // function expresssion for revealing form
+        let formListener = (event) => {
+            // prevent default action
+            event.preventDefault();
+            // use fetch to submit data asynchronously
+            const formData = new FormData(form);
+            fetch(endpoint, {
+                'method': 'POST',
+                'body': formData
+            })
+            .then(() => {
+                // update table get value that user submitted to update frontend table for user
+                btn.innerHTML = formData.get(cellValueName);
+            })  // hide and reset form
+            .then(() => {
+                // hide form
+                form.style.display = "none";
+            })
+        }
+
         // reveal form if hidden, hide if revealed
         if (form.style.display === "none") {
             form.style.display = "inline";
-                // event listener for form submit 
-                form.addEventListener('submit', (event) => {
-                    // prevent default action
-                    event.preventDefault();
-                    // use fetch to submit data asynchronously
-                    const formData = new FormData(form);
-                    fetch(endpoint, {
-                        'method': 'POST',
-                        'body': formData
-                    })
-                    .then(() => {
-                        // get value that user submitted to update frontend table for user
-                        btn.innerHTML = formData.get(cellValueName);
-                    })  // hide form once user submits
-                    .then(() => form.style.display = "none")
-                })
-    
-            // update table
-            /* update rep number
-            .then(() => { 
-                btnChangeWeight.textContent = formData.get('weight_number');
-            })
-            // hide formChangeReps element
-            .then(() => formChangeWeight.style.display = "none");*/
-
-        // hide form if hidden
-          } else {
-
+            // add event listener to form
+            form.addEventListener('submit', formListener, { once: true });
+        } else {
             form.style.display = "none";
-          }
     }
+}   
 }
