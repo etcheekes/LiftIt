@@ -26,10 +26,11 @@ a:hover {
 }
 
 /* navigation bar customisation for dropdown menu, dropdown triggers at 982px width */
-@media only screen and (max-width: 982px) {
+@media only screen and (max-width: 991px) {
     .nav-item > a {
         padding: 2vw 3vw;
     }
+    
 }
 
 /* stop body colliding with navigation bar*/
@@ -165,6 +166,7 @@ h1 > span {
 
   color: crimson;
 }
+
 /* Customise brand name */
 #brand_name {
   display: inline;
