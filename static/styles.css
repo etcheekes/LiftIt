@@ -25,6 +25,13 @@ a:hover {
   color: crimson;
 }
 
+/* navigation bar customisation for dropdown menu, dropdown triggers at 982px width */
+@media only screen and (max-width: 982px) {
+    .nav-item > a {
+        padding: 2vw 3vw;
+    }
+}
+
 /* stop body colliding with navigation bar*/
 body {
   position: relative;
