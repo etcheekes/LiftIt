@@ -1,7 +1,7 @@
 # simplifies python SQL querying
 from cs50 import SQL
 # allow sessions and cookies
-from flask import Flask, render_template, request, session, flash 
+from flask import Flask, render_template, request, session, flash, jsonify
 from flask_session import Session
 # security for passwords
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -473,6 +473,18 @@ def logout():
     return render_template("login.html")
 
 @app.route("/test")
+@login_required
 def test():
 
     return render_template("test.html")
+
+# retrieve last row added to user-created workout from the logged in user
+@app.route("/get_last_user_created_row", methods=["GET"])
+def get_row():
+
+    # obtain exercises from workout plan the user just added to
+    # (as this request is only made when the user adds a exercise to a workout plan, by filtering the highest value track_row by user, we obtain the most recent addition)
+    row = db.execute("SELECT exercises.exercise, exercises.muscle, exercises.equipment, workout_details.reps, CAST (workout_details.weight AS TEXT) AS weight, workout_details.measurement FROM exercises INNER JOIN workout_details ON workout_details.track_ex=exercises.id WHERE workout_details.trackuser = ? ORDER BY track_row DESC LIMIT 1", session["user_id"])
+
+    # return row as json which is used to dynamically update the table
+    return jsonify(row)
