@@ -32,96 +32,6 @@ function conDelete() {
 }
 
 
-// order table by exercise name alphabetically in browse.html
-
-function orderTableBrowse(data, property, parentElement) {
-
-    // obtain reference to button
-    alphabetize = document.querySelector('#alphabetize');
-
-    alphabetize.addEventListener('click', () => {
-        // if list is unordered set to ascending order
-        if (alphabetize.getAttribute("value") === "unordered"){
-            ordered = ascendingOrder(data, property);
-            alphabetize.setAttribute("value", "ascending");
-        }
-        // if list is ascending order set to descending order
-        else if (alphabetize.getAttribute("value") === "ascending"){
-            ordered =  descendingOrder(data, property);
-            alphabetize.setAttribute("value", "descending");
-        }
-        // if list is descending set to ascending order
-        else {
-            ordered = ascendingOrder(data, property);
-            alphabetize.setAttribute("value", "ascending");
-        }
-        
-        // obtain reference to table body
-        const tableBody = document.querySelector(parentElement);
-
-        // clear table
-        removeChildNodes(tableBody);
-
-        // create, fill, and place rows in table
-        for (let row = 0; row < ordered.length; row += 1){
-            // create new row
-            const newRow = document.createElement("tr");
-
-            // create and fill cells to populate row (to improve, could programmatically create the amount of cells I need)
-            const cell1 = document.createElement("td");
-            cell1.textContent = ordered[row].exercise;
-            const cell2 = document.createElement("td");
-            cell2.textContent = ordered[row].muscle;
-            const cell3 = document.createElement("td");
-            cell3.textContent = ordered[row].equipment;
-            const cell4 = document.createElement("td");
-
-            // create delete form
-            const form = document.createElement("form");
-            form.setAttribute("action", "/dynamic_delete_exercise_from_database");
-            form.setAttribute("method", "post");
-            form.setAttribute("onsubmit", "return conDelete()");
-            // create input elements for delete form
-            const delInput = document.createElement("input");
-            delInput.setAttribute("type", "hidden");
-            delInput.setAttribute("name", "delete");
-            // obtain id number for the row, this is used to identify the row to delete from the server
-            const exerciseId = ordered[row].id;
-            delInput.setAttribute("value", exerciseId);
-            // create button
-            const delButton = document.createElement("button");
-            delButton.setAttribute("type", "submit");
-            delButton.textContent = "Delete";
-            // append inputs to form
-            form.appendChild(delInput);
-            form.appendChild(delButton);
-            
-            // append delete form to cell 4
-            cell4.appendChild(form);
-
-            // append cells to row
-            newRow.append(cell1, cell2, cell3, cell4);
-
-            // append row to tbody
-            tableBody.appendChild(newRow);
-
-            // add event listener that uses fetch to remove exercise from database without having to reload page
-            form.addEventListener("submit", (event) => {
-                // prevent form submitting normally
-                event.preventDefault();
-                // use fetch to submit form data asynchronously
-                const formData = new FormData(event.target);
-                fetch("/delete_exercise_from_database", {
-                    'method': 'POST',
-                    'body': formData
-                })
-                // remove row from user's view once deleted from database
-                .then(() => newRow.remove());
-            });
-        }
-    })
-    
-}
 
 // Order table ascending or descending order by col_num
 function orderTable(col_num) {
@@ -258,10 +168,71 @@ function alterTableRowCell(buttonClass, endpoint, cellValueName) {
         // reveal form if hidden, hide if revealed
         if (form.style.display === "none") {
             form.style.display = "inline";
-            // add event listener to form
+            // add event listener to form, third argument ensures multiple listener events can't be triggered
             form.addEventListener('submit', formListener, { once: true });
         } else {
             form.style.display = "none";
     }
 }   
+}
+
+// add row to table from form submit
+function addRow(formClass, endpoint, tbodyElementIdentifier) {
+
+    form = document.querySelector(formClass)
+
+    // add event listener for form submit
+    form.addEventListener('submit', (event) => {
+
+        // prevent default form submission
+        event.preventDefault();
+
+        // use fetch to submit data asynchronously
+        const formData = new FormData(form);
+        fetch(endpoint, {
+            'method': 'POST',
+            'body': formData
+        })
+        // check response is ok, if so, then retrieve information on the user's last exercise added to workout
+        .then(response => {
+            if (response.ok) {
+                // fetch data for new row
+                return fetch('/get_last_user_created_row', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+            }
+        })
+        // obtain data
+        .then(response => response.json())
+        .then(data => {
+            // update table using the data
+            // obtain reference to table 
+            table = document.querySelector(tbodyElementIdentifier);
+
+            // insert empty row at start of table
+            const row = table.insertRow(0);
+
+            // attach workout plan information to relevant rows
+            const cellExercise = row.insertCell(0);
+            cellExercise.innerHTML = data[0]["exercise"];
+            const cellMuscle = row.insertCell(1);
+            cellMuscle.innerHTML = data[0]["muscle"];
+            const cellEquipment = row.insertCell(2);
+            cellEquipment = data[0]["equipment"]
+            const cellRepetitions = row.insertCell(3);
+            cellRepetitions = data[0]["repetitions"];
+            const cellWeight = data[0]["weight"] + ' ' + data[0]["measurement"];
+            cellWeight = data[0]["weight"];
+            const cellDelete = row.insertCell(5);
+            cellDelete = "Delete";
+
+            // reset form
+            
+
+
+        });
+    });
 }
