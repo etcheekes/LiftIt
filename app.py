@@ -484,7 +484,6 @@ def get_row():
 
     # obtain exercises from workout plan the user just added to
     # (as this request is only made when the user adds a exercise to a workout plan, by filtering the highest value track_row by user, we obtain the most recent addition)
-    row = db.execute("SELECT exercises.exercise, exercises.muscle, exercises.equipment, workout_details.reps, CAST (workout_details.weight AS TEXT) AS weight, workout_details.measurement FROM exercises INNER JOIN workout_details ON workout_details.track_ex=exercises.id WHERE workout_details.trackuser = ? ORDER BY track_row DESC LIMIT 1", session["user_id"])
-
+    row = db.execute("SELECT exercises.exercise, exercises.muscle, exercises.equipment, workout_details.wk_name ,workout_details.reps, CAST (workout_details.weight AS TEXT) AS weight, workout_details.measurement, workout_details.track_row FROM exercises INNER JOIN workout_details ON workout_details.track_ex=exercises.id WHERE workout_details.trackuser = ? ORDER BY track_row DESC LIMIT 1", session["user_id"])
     # return row as json which is used to dynamically update the table
     return jsonify(row)
