@@ -31,7 +31,11 @@ function conDelete() {
   return confirm("Confirm removal")
 }
 
-
+// obtain specific child elements of element by referencing the parent's element
+function obtainChildElements(parentElementIdentifier, childElementIdentifier) {
+    const parentElement = document.querySelector(parentElementIdentifier);
+    return parentElement.querySelectorAll(childElementIdentifier);
+}
 
 // Order table ascending or descending order by col_num
 function orderTable(col_num) {
@@ -214,8 +218,9 @@ function addRow(formClass, endpoint, tbodyElementIdentifier) {
                 });
             }
         })
-        // obtain data
+        // obtain relevant data for the new exercise added to the user's workout
         .then(response => response.json())
+        // update frontend table for user
         .then(data => {
             // update table using the data
             // obtain reference to table 
@@ -250,16 +255,27 @@ function addRow(formClass, endpoint, tbodyElementIdentifier) {
             alterWeight(cellWeightMeasuremet, trackRow, wkName, data[0]["weight"]);
             // implement functionality for weight button
             alterTableRowCell('.access_weight', '/view_plan', "weight_number");
-            // need to incorporate cellMeasurement
-            //cellWeight.innerHTML = data[0]["weight"] + ' ' + data[0]["measurement"];
+    
             // create and append html measurement td elements children
             alterMeasurement(cellWeightMeasuremet, trackRow, wkName, data[0]["measurement"])
             // implement functionality for measurement button
             alterTableRowCell('.access_measurement', '/view_plan', "measurement_update");
 
             const cellDelete = row.insertCell(5);
-            cellDelete.innerHTML = "Delete";
+            // create and append delete button
+            toDelete(cellDelete, trackRow);
+            // implement functionality for delete button
+            deleteRowFromTable('.newlyAddedDeleteBtn', '/view_plan');
 
+        })
+        // clear user entered input
+        .then(() => {
+            formElements = obtainChildElements('.add_exercise', 'input');
+
+            // clear first four input elements in formElements
+            for (let i = 0; i < 4; i += 1){
+                formElements[i].value = '';
+              }
         });
     });
 }
@@ -402,3 +418,30 @@ function alterMeasurement(cell, rowIdentifier, wkName, measurement) {
     // attach button and form to cell5
     cell.append(spanMeasure);
 }
+
+// create delete button to send form to server
+
+function toDelete(cell, rowIdentifier) {
+    // create delete form
+    const form = document.createElement("form");
+    form.setAttribute("action", "/view_plan");
+    form.setAttribute("method", "post");
+    form.setAttribute("onsubmit", "return conDelete()");
+    // create input elements for delete form
+    const delInput = document.createElement("input");
+    delInput.setAttribute("type", "hidden");
+    delInput.setAttribute("name", "delete");
+    // obtain id number for the row, this is used to identify the row in the wk_plan table to delete from the server
+    delInput.setAttribute("value", rowIdentifier);
+    // create button
+    const delButton = document.createElement("button");
+    delButton.setAttribute("type", "submit");
+    delButton.setAttribute("class", "newlyAddedDeleteBtn")
+    delButton.textContent = "Delete";
+    // append inputs to form
+    form.appendChild(delInput);
+    form.appendChild(delButton);
+    // append delete form to cell 4
+    cell.appendChild(form);
+}
+
