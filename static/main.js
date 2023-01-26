@@ -121,17 +121,29 @@ function deleteRowFromTable(buttonClass, endpoint) {
                 'method': 'POST',
                 'body': formData
             })
-            // remove row from user's view once deleted from database
-            .then(() => {
+            // obtain response to request
+            .then((response) => {
+                // if fetch request successful remove row from user's view once deleted from database
+                if (!response.ok) {
+                    // if fetch request unsuccesfull retrieve status code to show what the error was and send to catch statement
+                    // (this replaces the default default error object for the catch statement)
+                    throw new Error(`HTTP error: ${response.status}`);
+                } 
                 // obtain row element
-                rowDelete = event.target.closest('tr');
+                let rowDelete = event.target.closest('tr');
                 // remove row element
-                rowDelete.remove()});
+                rowDelete.remove();
             })
+            .catch((error) => {
+                console.error(`Failed to fetch: ${error}`);
+                alert('Unable to delete, please try again later or please contact X email with your issue');
+            });
+        })
     })
 }
 
-// To identify whether cells have event listener or not
+// To identify whether cells have event listener or not (required when altering cells in a row that the user just added, that is
+// rather than cells from a row that first rendered through the flask backend rather than created and added using JavaScript)
 let cellsWithEventListeners = [];
 // reveal hidden form and submit form to alter cell value
 function alterTableRowCell(buttonClass, endpoint, cellValueName) {
@@ -167,14 +179,12 @@ function alterTableRowCell(buttonClass, endpoint, cellValueName) {
                 'method': 'POST',
                 'body': formData
             })
-            .then(() => {
-                // update table get value that user submitted to update frontend table for user
+            .then((response) => {
+                if (response.ok)
+                // update table get value that the user submitted to update frontend table for user
                 btn.innerHTML = formData.get(cellValueName);
-            })  // hide and reset form
-            .then(() => {
-                // hide form
                 form.style.display = "none";
-            })
+            });  // hide and reset form
         }
 
         // reveal form if hidden, hide if revealed
@@ -202,27 +212,45 @@ function addRow(formClass, endpoint, tbodyElementIdentifier) {
 
         // use fetch to submit data asynchronously
         const formData = new FormData(form);
+
+        // if any input value is blank (an empty string), then instruct user that all fields need to be filled and then exist the function
+        for (userInput of formData){
+            if (userInput[1] === ''){
+                alert('Please ensure workout is selected and all fields are filled.');
+                return;
+            }
+          }
+
         fetch(endpoint, {
             'method': 'POST',
             'body': formData
         })
         // check response is ok, if so, then retrieve information on the user's last exercise added to workout
         .then(response => {
-            if (response.ok) {
-                // fetch data for new row
-                return fetch('/get_last_user_created_row', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
+            // send error message to catch statement if response fails
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
             }
+            // send error message if user has no filled all inputs
+            // fetch data for new row
+            return fetch('/get_last_user_created_row', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
         })
-        // obtain relevant data for the new exercise added to the user's workout
-        .then(response => response.json())
+        // obtain relevant data for the new exercise added to the user's workout if fetch request was successful
+        // .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+            return response.json()
+        })
         // update frontend table for user
         .then(data => {
-            // update table using the data
+            
             // obtain reference to table 
             table = document.querySelector(tbodyElementIdentifier);
 
@@ -230,7 +258,6 @@ function addRow(formClass, endpoint, tbodyElementIdentifier) {
             const row = table.insertRow(0);
 
             // attach workout plan information to relevant rows
-            // todo: make equipment, reps, and weight and delete buttons interactive
             const cellExercise = row.insertCell(0);
             cellExercise.innerHTML = data[0]["exercise"];
 
@@ -244,12 +271,14 @@ function addRow(formClass, endpoint, tbodyElementIdentifier) {
             trackRow = data[0]["track_row"];
             wkName = data[0]["wk_name"];
 
+            // Reps
             const cellReps = row.insertCell(3);
             // create and append html td elements children
             alterReps(cellReps, trackRow, wkName, data[0]["reps"]);
             // implement functionality for rep button
             alterTableRowCell(".access_reps", "/view_plan", "rep_number");
 
+            // Weight/measurement
             const cellWeightMeasuremet = row.insertCell(4);
             // create and append html weight td elements children
             alterWeight(cellWeightMeasuremet, trackRow, wkName, data[0]["weight"]);
@@ -261,21 +290,23 @@ function addRow(formClass, endpoint, tbodyElementIdentifier) {
             // implement functionality for measurement button
             alterTableRowCell('.access_measurement', '/view_plan', "measurement_update");
 
+            // Delete option
             const cellDelete = row.insertCell(5);
             // create and append delete button
             toDelete(cellDelete, trackRow);
             // implement functionality for delete button
             deleteRowFromTable('.newlyAddedDeleteBtn', '/view_plan');
 
-        })
-        // clear user entered input
-        .then(() => {
+            // clear user entered input
             formElements = obtainChildElements('.add_exercise', 'input');
-
             // clear first four input elements in formElements
             for (let i = 0; i < 4; i += 1){
                 formElements[i].value = '';
               }
+        })
+        .catch((error) => {
+            console.error(`Failed to fetch: ${error}`);
+            alert('Issue adding exercise to table, please try later or contact X email');
         });
     });
 }
