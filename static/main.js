@@ -198,17 +198,33 @@ function alterTableRowCell(buttonClass, endpoint, cellValueName) {
 }   
 }
 
+// compare two node's inner text
+function compareValues (identifier1, identifier2) {
+    if (identifier1 === identifier2){
+        return true;
+    }
+    return false;
+}
 
 // add row to table from form submit
 function addRow(formClass, endpoint, tbodyElementIdentifier) {
 
-    form = document.querySelector(formClass)
+    form = document.querySelector(formClass);
 
     // add event listener for form submit
     form.addEventListener('submit', (event) => {
 
-        // prevent default form submission
-        event.preventDefault();
+        // if user is adding exercise to workout that is not currently rendered in table, then page reload and render workout
+        // with new exercise added
+
+        selectedWorkoutToView = document.querySelector('.wk_name_placeholder').textContent; 
+        workoutToAddExerciseTo = document.querySelector('.add_exercise > select').value;
+
+        // compare the users selected option with the wk_name_placeholdercontent, if differs then user is adding exercise to workout not selected
+        if (compareValues(selectedWorkoutToView, workoutToAddExerciseTo)){
+            // if identical then disable default response as table can be dynamically manipulated with JavaScript
+            event.preventDefault();
+        }
 
         // use fetch to submit data asynchronously
         const formData = new FormData(form);

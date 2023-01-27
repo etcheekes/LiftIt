@@ -10,7 +10,7 @@
     <div class="search_input sticky">
         <!-- retrieve workout -->
         <form action="/view_plan" method="post" class="search_form div-min-width" id="retrieve_wk">
-            <h2>Your Workout</h2>
+            <h2 class="wk_name_placeholder">Your Workout</h2>
             <select name="wk_plan" class="wide-select" id="get_wk_name">
                 <option style="display:none;" value="0">Select Workout</option>
                 {% for i in user_workouts %}
