@@ -165,7 +165,7 @@ def add_exercise():
 @login_required
 def name_workout():
 
-    user_workouts = db.execute("SELECT wk_name FROM users_wk_name WHERE user = ?", session["user_id"])
+    user_workouts = db.execute("SELECT wk_name FROM users_wk_name WHERE user = ? ORDER BY wk_name COLLATE NOCASE ASC", session["user_id"])
 
     if request.method == "POST":
 
@@ -203,13 +203,7 @@ def name_workout():
             flash("Workout deleted")
             return render_template("name_workout.html", user_workouts=user_workouts)
 
-
-
         return render_template("name_workout.html", user_workouts=user_workouts)
-
-    
-    # obtain name of user's made workouts
-    user_workouts = db.execute("SELECT wk_name FROM users_wk_name WHERE user = ?", session["user_id"])
 
     return render_template("name_workout.html", user_workouts=user_workouts)
 
