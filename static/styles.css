@@ -369,7 +369,11 @@ a.button_link:hover {
   background-color: rgb(255, 26, 72);
 }
 
-/* customise delete buttons from tables */
+/* customise buttons from tables */
+
+th button:hover {
+    color: crimson;
+}
 
 td > form > button {
   background-color:transparent;
