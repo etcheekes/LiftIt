@@ -242,7 +242,7 @@ def view():
 
             # check user errors
             # user submits blank
-            if len(wk_choice) == 0:
+            if wk_choice == '0':
                 error = "Please choose a workout plan"
                 return render_template("error.html", error=error, url=url)
 
