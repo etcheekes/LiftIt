@@ -88,8 +88,8 @@ def browse():
 
 
     # obtain distinct categories from default options and user created exercises. 
-    muscle = db.execute("SELECT DISTINCT muscle FROM exercises WHERE user_id = ?", session["user_id"])
-    equipment = db.execute("SELECT DISTINCT equipment FROM exercises WHERE user_id = ?", session["user_id"])
+    muscle = db.execute("SELECT DISTINCT muscle FROM exercises WHERE user_id = ? ORDER BY muscle COLLATE NOCASE ASC", session["user_id"])
+    equipment = db.execute("SELECT DISTINCT equipment FROM exercises WHERE user_id = ? ORDER BY muscle COLLATE NOCASE ASC", session["user_id"])
 
     # to display exercises with said muscle group
     muscle_display = request.args.get("exercises")
@@ -221,7 +221,7 @@ def name_workout():
 def view():
 
     # obtain name of user's made workouts
-    user_workouts = db.execute("SELECT wk_name FROM users_wk_name WHERE user = ?", session["user_id"])
+    user_workouts = db.execute("SELECT wk_name FROM users_wk_name WHERE user = ? ORDER BY wk_name COLLATE NOCASE ASC", session["user_id"])
 
     # obtain all exercises available to the user
     all_exercises = db.execute("SELECT exercise FROM exercises WHERE user_id = ?", session["user_id"])
