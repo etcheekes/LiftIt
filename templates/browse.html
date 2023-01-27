@@ -69,10 +69,13 @@
       
   </tbody>
   </table> 
-      <!-- show table once user submits search info -->
+      <!-- setup table  -->
       {% if reveal_table %}
         <script>
+          // show table once user submits search info
           showField();
+          // make exercise names link to google search
+          tblCellGoogleSearch('table', 1);
         </script>
       {% endif %}
 

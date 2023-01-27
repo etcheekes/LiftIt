@@ -116,7 +116,6 @@ table {
     border-collapse: collapse;
     width: 80%;
     color: rgb(0, 0, 0);
-    text-align: center;
     table-layout: auto;
     overflow: auto;
     width: 100%;
@@ -146,6 +145,11 @@ th {
 
 .shorten_column {
   width: 15%;
+}
+
+tr > a {
+  text-align: left;
+  color: inherit;
 }
 
 /* make items sticky despite being in Grid Layout being in */

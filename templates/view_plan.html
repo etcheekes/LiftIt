@@ -108,7 +108,11 @@
             <script>
                 // show table
                 showField();
+                // make exercise names link to google search
+                tblCellGoogleSearch('table', 1); 
+                // Display workout name
                 changeHeader("h2", 0, '{{ wk_choice }}');
+                // maintain workout name in input field for adding new exercises to workouts
                 changeOption('add_ex_to_wk', '{{ wk_choice }}');
             </script>
         {% endif %}

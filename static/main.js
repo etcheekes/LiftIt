@@ -467,7 +467,7 @@ function toDelete(cell, rowIdentifier) {
     // create button
     const delButton = document.createElement("button");
     delButton.setAttribute("type", "submit");
-    delButton.setAttribute("class", "newlyAddedDeleteBtn")
+    delButton.setAttribute("class", "newlyAddedDeleteBtn");
     delButton.textContent = "Delete";
     // append inputs to form
     form.appendChild(delInput);
@@ -476,3 +476,39 @@ function toDelete(cell, rowIdentifier) {
     cell.appendChild(form);
 }
 
+// when clicking cell content, a google search in a new tab occurs with that cell's contents
+function tblCellGoogleSearch(tbodyIdentifier, colNum) {
+
+    // reference cells in specific column
+    let cells = document.querySelectorAll(`${tbodyIdentifier} td:nth-child(${colNum})`);
+
+    // for each cell 
+    for (let i = 0; i < cells.length; i += 1){
+        // if element already wrapped in <a> element then skip current loop iteration (tagName returns uppercase hence using A)
+        if (cells[i].parentNode.tagName === "A"){
+            // skip current loop iteration
+            continue;
+        }
+        // save value
+        cellContent = cells[i].textContent;
+        // replace spaces with + so google search works
+        // replace method uses regex where / / indicates blank space and g flag means replace all occurences 
+        searchString = cellContent.replace(/ /g, "+");
+
+        // reference current cell
+        toEncase = cells[i];
+
+        // anchor tag to wrap over current cell
+        aWrapper = document.createElement("a")
+        // attribute that creates an address using the specific string
+        aWrapper.setAttribute("href", `http://www.google.com/search?q=${searchString}`);
+        // attribute that makes so clicking the link opens the google search in a new tab
+        aWrapper.setAttribute("target", "_blank");
+
+        // place wrapper before the original element
+        toEncase.insertAdjacentElement("beforebegin", aWrapper);
+        
+        // move original element to inside the wrapper
+        aWrapper.appendChild(toEncase);
+    }
+}
