@@ -171,6 +171,12 @@ h1 > span {
   color: crimson;
 }
 
+/* remove padding from buttons in span elements */
+
+span > button {
+    padding: 0;
+}
+
 /* Customise brand name */
 #brand_name {
   display: inline;

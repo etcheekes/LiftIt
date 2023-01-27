@@ -419,7 +419,8 @@ function alterWeight(cell, rowIdentifier, wkName, weight) {
 
 function alterMeasurement(cell, rowIdentifier, wkName, measurement) {
 
-    // weight measurement
+    // maintain space before measurement with &nbsp; (browsers may trim whitespace)
+    measurement = `&nbsp;${measurement}`
     // create button
     const btnChangeMeasurement = document.createElement("button");
     btnChangeMeasurement.setAttribute("type", "submit");
