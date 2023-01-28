@@ -41,8 +41,13 @@
             <input placeholder="measurement" name="measurement" type="text" autocomplete="off"><br>
             <input type="submit" value="Add to Workout"/>
         </form>
+        <!-- Button trigger modal -->
+        <button type="button" class="modal-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Click for Guidance
+        </button>
     </div>
-        <!-- show table -->
+    <!-- show table -->
+    <div>
         <table class="search_results" hidden="false" id="hiddenField">
             <thead>
                 <th> 
@@ -104,6 +109,29 @@
             {% endfor %}
             </tbody>
         </table>
+        <!-- Modal window to inform users on how to manipuate their workout plan-->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Table Help</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>Use the 'See Form' to view workout.</li>
+                        <li>Alter rep number, weight, and measurement by clicking on their values in the table.</li>
+                        <li>Click on the exercise title to order the table alphabetically by exercise name.</li>
+                        <li>Click an exercise name to see demonstrations.</li>
+                        <li>Use the 'Add Exercise' form to add an exercise to the table.</li>
+                      </ul>                      
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="modal-sec-button" data-bs-dismiss="modal">Understood</button>
+                </div>
+            </div>
+            </div>
+        </div>
         {% if users_wks %}
             <script>
                 // show table
