@@ -152,6 +152,10 @@ tr > a {
   color: inherit;
 }
 
+#order {
+    font-weight: bold;
+ }
+
 /* make items sticky despite being in Grid Layout being in */
 
 .sticky {

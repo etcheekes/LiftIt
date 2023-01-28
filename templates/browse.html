@@ -33,6 +33,10 @@
             </select>
             <input type="submit" value="Search">
         </form>
+        <!-- Button trigger modal -->
+        <button type="button" class="modal-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Click for Guidance
+        </button>
     </div>
   </div>
   <table class="search_results" hidden="false" id="hiddenField">
@@ -44,31 +48,51 @@
       <th>Equipment</th>
       <th>Remove</th>
     </thead>
-    <tbody id="order_rows">
-      {% for i in category_to_display%}
-        <tr>
-            <td>{{i['exercise']}}</td>
-            <td>{{i['muscle']}}</td>
-            <td>{{i['equipment']}}</td>
-            <!-- allow user to delete exercise from workout -->
-            <!-- obtain unique id for row that contains the exercise -->
-            <td>
-                <form action="/delete_exercise_from_database" method="post" class="delete_button" onsubmit="return conDelete()">
-                  <input type="hidden" name="delete" value="{{i['id']}}">
-                  <!-- obtain reference to whether the user searched by muscle or equipment -->
-                  {% if muscle_display %}
-                    <input type="hidden" name="muscle" value="{{i['muscle']}}">
-                  {% elif equipment_display %}
-                    <input type="hidden" name="equipment" value="{{i['equipment']}}">
-                  {% endif %}
-                  <button type="submit">Delete</button>
-                </form>
-            </td>
-        </tr>
-      {% endfor %}
-      
-  </tbody>
-  </table> 
+        <tbody id="order_rows">
+            {% for i in category_to_display%}
+                <tr>
+                    <td>{{i['exercise']}}</td>
+                    <td>{{i['muscle']}}</td>
+                    <td>{{i['equipment']}}</td>
+                    <!-- allow user to delete exercise from workout -->
+                    <!-- obtain unique id for row that contains the exercise -->
+                    <td>
+                        <form action="/delete_exercise_from_database" method="post" class="delete_button" onsubmit="return conDelete()">
+                        <input type="hidden" name="delete" value="{{i['id']}}">
+                        <!-- obtain reference to whether the user searched by muscle or equipment -->
+                        {% if muscle_display %}
+                            <input type="hidden" name="muscle" value="{{i['muscle']}}">
+                        {% elif equipment_display %}
+                            <input type="hidden" name="equipment" value="{{i['equipment']}}">
+                        {% endif %}
+                        <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+  </table>
+    <!-- Modal window to inform users on how to manipuate their workout plan-->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Table Help</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Search by exercise name, muscle worked, or equipment used</li>
+                    <li>Click on the exercise title to order the table alphabetically by exercise name.</li>
+                    <li>Click an exercise name to see demonstrations.</li>
+                </ul>                      
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="modal-sec-button" data-bs-dismiss="modal">Understood</button>
+            </div>
+        </div>
+        </div>
+    </div>
       <!-- setup table  -->
       {% if reveal_table %}
         <script>
