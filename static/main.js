@@ -19,12 +19,6 @@ function changeOption(id, change) {
   document.getElementById(id).value = change;
 }
 
-// submit form
-
-function submitForm(id) {
-  document.getElementById(id).submit();
-}
-
 // confirm delete
 
 function conDelete() {
