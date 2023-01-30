@@ -161,9 +161,9 @@ def create_exercise():
 
 
 
-@app.route("/name_workout", methods=["GET", "POST"])
+@app.route("/manage-workouts", methods=["GET", "POST"])
 @login_required
-def name_workout():
+def manage_workouts():
 
     user_workouts = db.execute("SELECT wk_name FROM users_wk_name WHERE user = ? ORDER BY wk_name COLLATE NOCASE ASC", session["user_id"])
 
@@ -189,7 +189,7 @@ def name_workout():
             
             db.execute("INSERT INTO users_wk_name (user, wk_name) VALUES (?, ?)", session["user_id"], wk_name)
             flash("Workout created! See Customise Workouts.")
-            return render_template("name_workout.html", user_workouts=user_workouts)
+            return render_template("manage-workouts.html", user_workouts=user_workouts)
         
         # delete workout
         if "wk_delete" in request.form:
@@ -201,11 +201,11 @@ def name_workout():
             db.execute("DELETE FROM users_wk_name WHERE wk_name = ? AND user = ?", wk_delete, session["user_id"])
             db.execute("DELETE FROM workout_details WHERE wk_name = ? AND trackuser = ?", wk_delete, session["user_id"])
             flash("Workout deleted")
-            return render_template("name_workout.html", user_workouts=user_workouts)
+            return render_template("manage-workouts.html", user_workouts=user_workouts)
 
-        return render_template("name_workout.html", user_workouts=user_workouts)
+        return render_template("manage-workouts.html", user_workouts=user_workouts)
 
-    return render_template("name_workout.html", user_workouts=user_workouts)
+    return render_template("manage-workouts.html", user_workouts=user_workouts)
 
 
 
