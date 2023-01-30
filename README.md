@@ -11,9 +11,9 @@ The frontend contains nine HTML files in the templates folder (I also discuss ea
 - Users can register on register.html and their username and (hashed) password gets saved in the database.
 - Login.html lets users log in and their details are validated in the backend server. Upon logging in for the first time each user receives a unique session ID. The session ID is used to link activity and database table rows uniquely to each user.
 - Browse.html lets users search and delete all stored exercises. Users can search by word, muscle, or equipment. Results display in a table with four columns named exercise, muscle, equipment, and delete.
-- Add_exercise.html lets a user add an exercise to the database that is unique to them.
-- Name_workout.html lets users create (i.e., name a workout) or delete an existing workout for themselves.
-- View_plan.html is where users can view, add, and remove exercises from a created workout.
+- Create-exercise.html lets a user add an exercise to the database that is unique to them.
+- Manage_workouts.html lets users create (i.e., name a workout) or delete an existing workout for themselves.
+- Customise-workout.html is where users can view, add, and remove exercises from a created workout.
     - Viewing a workout displays a table consisting of six columns which are exercise, muscle, equipment, repetitions, weight, and remove. From the table directly the user can alter the repetitions and weight values.
     - A user adding an exercise to a workout involves them supplying an exercise name from their stored exercises (which is autosuggested for them as they type), repetitions intended, weight, and weight measurement.
 
