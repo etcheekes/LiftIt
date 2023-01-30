@@ -120,9 +120,9 @@ def browse():
     return render_template("browse.html", muscle=muscle, equipment=equipment, category_to_display=[])
 
 
-@app.route("/add_exercise", methods=["GET","POST"])
+@app.route("/create-exercise", methods=["GET","POST"])
 @login_required
-def add_exercise():
+def create_exercise():
 
     if request.method == "POST":
         # Obtain exercises
@@ -150,14 +150,14 @@ def add_exercise():
         db.execute("INSERT INTO exercises (exercise, muscle, equipment, user_id) VALUES (?, ?, ?, ?)", store_name, store_muscle, store_equip, session["user_id"])
 
         flash("Exercise successfully added")
-        return render_template("add_exercise.html")
+        return render_template("create-exercise.html")
 
     # obtain all possible muscle and equipment categories
     all_muscles = db.execute("SELECT DISTINCT muscle FROM exercises WHERE user_id = ?", session["user_id"])
 
     all_equipment = db.execute("SELECT DISTINCT equipment FROM exercises WHERE user_id = ?", session["user_id"])
 
-    return render_template("add_exercise.html", all_muscles=all_muscles, all_equipment=all_equipment)
+    return render_template("create-exercise.html", all_muscles=all_muscles, all_equipment=all_equipment)
 
 
 
