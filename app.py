@@ -210,9 +210,9 @@ def manage_workouts():
 
 
 
-@app.route("/view_plan", methods=["GET", "POST"])
+@app.route("/customise-workouts", methods=["GET", "POST"])
 @login_required
-def view():
+def customise_workouts():
 
     # obtain name of user's made workouts
     user_workouts = db.execute("SELECT wk_name FROM users_wk_name WHERE user = ? ORDER BY wk_name COLLATE NOCASE ASC", session["user_id"])
@@ -248,7 +248,7 @@ def view():
                 error = "That workout plan does not exist or lacks any exercises"
                 return render_template("error.html", error=error, url=url)
 
-            return render_template("view_plan.html", users_wks=users_wks, user_workouts=user_workouts, wk_choice=wk_choice, all_exercises=all_exercises)
+            return render_template("customise-workouts.html", users_wks=users_wks, user_workouts=user_workouts, wk_choice=wk_choice, all_exercises=all_exercises)
         
     # if user wishes to add new exercise to a workout plan
 
@@ -284,7 +284,7 @@ def view():
             # add exercise to user workout
             db.execute("INSERT INTO workout_details (trackuser, wk_name, track_ex, reps, weight, measurement) VALUES (?, ?, ?, ?, ?, ?)", session["user_id"], wk_name_add, key, reps, weight, measurement)
 
-            return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
+            return render_template("customise-workouts.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
         
     # if user updates reps
 
@@ -303,10 +303,10 @@ def view():
             # update rep number for that exercise in user_workouts table
             db.execute("UPDATE workout_details SET reps = ? WHERE track_row = ?", int(update), int(row_id))
 
-            # get workout name to use in javascript to reload table in view_plan.html
+            # get workout name to use in javascript to reload table in customise-workouts.html
             wk_name_add = request.form.get("get_wk_name")
 
-            return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
+            return render_template("customise-workouts.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
 
     # if user updates weight
 
@@ -325,10 +325,10 @@ def view():
             # update weight number for that exercise in user_workouts table
             db.execute("UPDATE workout_details SET weight = ? WHERE track_row = ?", int(update), int(row_id))
 
-            # get workout name to use in javascript to reload table in view_plan.html
+            # get workout name to use in javascript to reload table in customise-workouts.html
             wk_name_add = request.form.get("get_wk_name")
 
-            return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
+            return render_template("customise-workouts.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
     
     # if user updates measurement
 
@@ -348,10 +348,10 @@ def view():
             # update measurement for that exercise in user_workouts
             db.execute("UPDATE workout_details SET measurement = ? WHERE track_row = ?", update, int(row_id))
 
-            # get workout name to use in javascript to reload table in view_plan.html
+            # get workout name to use in javascript to reload table in customise-workouts.html
             wk_name_add = request.form.get("get_wk_name")
 
-            return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
+            return render_template("customise-workouts.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
 
     # if user removes exercise from workout plan
         if "delete" in request.form:
@@ -362,13 +362,13 @@ def view():
             # remove exercise from user_workouts table
             db.execute("DELETE FROM workout_details WHERE track_row = ?", int(to_delete))
 
-            # get workout name to use in javascript to reload table in view_plan.html
+            # get workout name to use in javascript to reload table in customise-workouts.html
             wk_name_add = request.form.get("get_wk_name")
         
 
-            return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
+            return render_template("customise-workouts.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
 
-    return render_template("view_plan.html", user_workouts=user_workouts, all_exercises=all_exercises)
+    return render_template("customise-workouts.html", user_workouts=user_workouts, all_exercises=all_exercises)
 
 
 

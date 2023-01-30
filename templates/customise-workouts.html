@@ -9,7 +9,7 @@
   <div class="container_brvp">
     <div class="search_input sticky">
         <!-- retrieve workout -->
-        <form action="/view_plan" method="post" class="search_form div-min-width" id="retrieve_wk">
+        <form action="/customise-workouts" method="post" class="search_form div-min-width" id="retrieve_wk">
             <h2 class="wk_name_placeholder">Your Workout</h2>
             <select name="wk_plan" class="wide-select" id="get_wk_name">
                 <option style="display:none;" value="0">Select Workout</option>
@@ -20,7 +20,7 @@
             <input type="submit" value="See"/>
         </form>
         <!-- add exercise -->
-        <form action="/view_plan" method="post" class="add_exercise div-min-width">
+        <form action="/customise-workouts" method="post" class="add_exercise div-min-width">
             <h3>Add to workout</h3>
             <select name="wk_plan_add" id="add_ex_to_wk">
                 <option style="display:none;" value="">Select Workout</option>
@@ -68,7 +68,7 @@
                     <!-- allow user to update reps for exercise -->
                     <td>
                         <button type="submit" class="access_reps" data-toggle="tooltip" title="Click to change">{{i['reps']}}</button>
-                        <form action="/view_plan" method="post" class="alter_cell_value" style="display: none;"> 
+                        <form action="/customise-workouts" method="post" class="alter_cell_value" style="display: none;"> 
                             <input type="number" name="rep_number">
                             <input type="hidden" name="rep_row" value="{{i['track_row']}}">
                             <input type="hidden" name="get_wk_name" value="{{i['wk_name']}}">
@@ -79,7 +79,7 @@
                         <!-- allow user to update weight number for exercise -->
                         <span>
                             <button type="submit" class="access_weight" data-toggle="tooltip" title="Click to change">{{i['weight']}}</button> 
-                            <form action="/view_plan" method="post" class="alter_cell_value" style="display:none;">
+                            <form action="/customise-workouts" method="post" class="alter_cell_value" style="display:none;">
                                 <input type="number" name="weight_number">
                                 <input type="hidden" name="weight_row" value="{{i['track_row']}}">
                                 <input type="hidden" name="get_wk_name" value="{{i['wk_name']}}">
@@ -89,7 +89,7 @@
                         <!-- allow user to update weight measurement for exercise -->
                         <span>
                             <button type="submit" class="access_measurement" data-toggle="tooltip" title="Click to change">{{i['measurement']}}</button>
-                            <form action="/view_plan" method="post" class="alter_cell_value" style="display:none;">
+                            <form action="/customise-workouts" method="post" class="alter_cell_value" style="display:none;">
                                 <input type="text" name="measurement_update">
                                 <input type="hidden" name="measurement_row" value="{{i['track_row']}}">
                                 <input type="hidden" name="get_wk_name" value="{{i['wk_name']}}">
@@ -99,7 +99,7 @@
                     </td>
                     <!-- allow user to delete exercise from workout -->
                     <td>
-                        <form action="/view_plan" method="post" class="delete_button" onsubmit="return conDelete()">
+                        <form action="/customise-workouts" method="post" class="delete_button" onsubmit="return conDelete()">
                             <input type="hidden" name="delete" value="{{i['track_row']}}">
                             <input type="hidden" name="get_wk_name" value="{{i['wk_name']}}">
                             <button type="submit">Delete</button>
@@ -156,15 +156,15 @@
             <!-- dynamically altering table -->
             <script>
                 // user add exercise to workout plan
-                addRow('.add_exercise', '/view_plan', '#order_rows');
+                addRow('.add_exercise', '/customise-workouts', '#order_rows');
                 // order table by exercise name
                 orderTable(0);
                 // delete row
-                deleteRowFromTable('.delete_button', '/view_plan');
+                deleteRowFromTable('.delete_button', '/customise-workouts');
                 // allow users to dynamically change values
-                alterTableRowCell('.access_reps', '/view_plan', "rep_number");
-                alterTableRowCell('.access_weight', '/view_plan', "weight_number");
-                alterTableRowCell('.access_measurement', '/view_plan', "measurement_update");
+                alterTableRowCell('.access_reps', '/customise-workouts', "rep_number");
+                alterTableRowCell('.access_weight', '/customise-workouts', "weight_number");
+                alterTableRowCell('.access_measurement', '/customise-workouts', "measurement_update");
             </script>
         {% endif %}
     </div>
