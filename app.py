@@ -70,13 +70,12 @@ def login():
         # Remember which user has logged in
         session["user_id"] = rows[0]["id_user"]
 
-        # if user has no rows in exercises table then fill table with default exercises + user's unique id
+        # if user has no rows in exercises table then fill table with default exercises and the user's unique id
         first_time_login = db.execute("SELECT * FROM exercises WHERE user_id = ?", session["user_id"])
-        
         if len(first_time_login) == 0:
             db.execute("INSERT INTO exercises (exercise, muscle, equipment, user_id) SELECT default_exercise, default_muscle, default_equipment, ? FROM default_exercises", session["user_id"])
 
-        # Redirect user to home pagebrowse
+        # Redirect user to home page
         return render_template("home.html")
 
     return render_template("login.html")
@@ -87,7 +86,7 @@ def login():
 def browse():
 
 
-    # obtain distinct categories from default options and user created exercises. 
+    # obtain distinct categories for muscle and equipment values. 
     muscle = db.execute("SELECT DISTINCT muscle FROM exercises WHERE user_id = ? ORDER BY muscle COLLATE NOCASE ASC", session["user_id"])
     equipment = db.execute("SELECT DISTINCT equipment FROM exercises WHERE user_id = ? ORDER BY muscle COLLATE NOCASE ASC", session["user_id"])
 
@@ -125,12 +124,12 @@ def browse():
 def create_exercise():
 
     if request.method == "POST":
-        # Obtain exercises
+        # Obtain exercise information
         store_name = request.form.get("name_store")
         store_muscle = request.form.get("muscle_store")
         store_equip = request.form.get("equip_store")
 
-        # store url for use in <a> tag in error.htm;
+        # store url for use in <a> tag in error.html;
         url = request.url
 
         # error if empty submission
@@ -140,7 +139,6 @@ def create_exercise():
         
         # error if exercise name already exists
         user_exercises = db.execute("SELECT exercise FROM exercises WHERE user_id = ?", session["user_id"])
-
         for exercise in user_exercises:
             if exercise['exercise'] == store_name:
                 error = "Exercise name taken"
@@ -149,10 +147,11 @@ def create_exercise():
         # Update database with new exercise
         db.execute("INSERT INTO exercises (exercise, muscle, equipment, user_id) VALUES (?, ?, ?, ?)", store_name, store_muscle, store_equip, session["user_id"])
 
+        # alert user that execise is successfully added
         flash("Exercise successfully added")
         return render_template("create-exercise.html")
 
-    # obtain all possible muscle and equipment categories
+    # obtain all possible distinct muscle and equipment categories
     all_muscles = db.execute("SELECT DISTINCT muscle FROM exercises WHERE user_id = ?", session["user_id"])
 
     all_equipment = db.execute("SELECT DISTINCT equipment FROM exercises WHERE user_id = ?", session["user_id"])
@@ -165,6 +164,7 @@ def create_exercise():
 @login_required
 def manage_workouts():
 
+    # obtain user's named workouts and organise in ascending order
     user_workouts = db.execute("SELECT wk_name FROM users_wk_name WHERE user = ? ORDER BY wk_name COLLATE NOCASE ASC", session["user_id"])
 
     if request.method == "POST":
@@ -194,13 +194,19 @@ def manage_workouts():
         # delete workout
         if "wk_delete" in request.form:
             wk_delete = request.form.get("wk_delete")
-            # check if user has not selected a workout
+
+            # return error is workout not selected
             if wk_delete == '0':
                 error = "please select an existing workout"
                 return render_template("error.html", error=error, url=url)
+            
+            # remove workout plan name and information from database
             db.execute("DELETE FROM users_wk_name WHERE wk_name = ? AND user = ?", wk_delete, session["user_id"])
             db.execute("DELETE FROM workout_details WHERE wk_name = ? AND trackuser = ?", wk_delete, session["user_id"])
+
+            # let user know workout is successfully deleted
             flash("Workout deleted")
+            
             return render_template("manage-workouts.html", user_workouts=user_workouts)
 
         return render_template("manage-workouts.html", user_workouts=user_workouts)
@@ -222,7 +228,7 @@ def customise_workouts():
 
     if request.method == "POST":
 
-        # variable to trigger javascript to reload the same workout table that the user just added to
+        # Trigger javascript which makes the header text and select element value the workout plan's name that the user requested
         keep = "keep"
 
         # for <a> tag in error.html
@@ -273,7 +279,7 @@ def customise_workouts():
                     exercise_exists += 1
             
             if exercise_exists < 1:
-                error = "Exercise not in database, please choose from the suggestion"
+                error = "Exercise not in database, please choose from the suggestions. You add a new exercise on the Create Exercise page."
                 url = request.url
                 return render_template("error.html", error=error, url=url)
             
@@ -303,7 +309,7 @@ def customise_workouts():
             # update rep number for that exercise in user_workouts table
             db.execute("UPDATE workout_details SET reps = ? WHERE track_row = ?", int(update), int(row_id))
 
-            # get workout name to use in javascript to reload table in customise-workouts.html
+            # retrieve workout plan name
             wk_name_add = request.form.get("get_wk_name")
 
             return render_template("customise-workouts.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
@@ -325,7 +331,7 @@ def customise_workouts():
             # update weight number for that exercise in user_workouts table
             db.execute("UPDATE workout_details SET weight = ? WHERE track_row = ?", int(update), int(row_id))
 
-            # get workout name to use in javascript to reload table in customise-workouts.html
+            # retrieve workout plan name
             wk_name_add = request.form.get("get_wk_name")
 
             return render_template("customise-workouts.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
@@ -348,7 +354,7 @@ def customise_workouts():
             # update measurement for that exercise in user_workouts
             db.execute("UPDATE workout_details SET measurement = ? WHERE track_row = ?", update, int(row_id))
 
-            # get workout name to use in javascript to reload table in customise-workouts.html
+            # retrieve workout plan name
             wk_name_add = request.form.get("get_wk_name")
 
             return render_template("customise-workouts.html", user_workouts=user_workouts, all_exercises=all_exercises, keep=keep, wk_name_add=wk_name_add)
@@ -362,7 +368,7 @@ def customise_workouts():
             # remove exercise from user_workouts table
             db.execute("DELETE FROM workout_details WHERE track_row = ?", int(to_delete))
 
-            # get workout name to use in javascript to reload table in customise-workouts.html
+            # retrieve workout plan name
             wk_name_add = request.form.get("get_wk_name")
         
 
@@ -408,8 +414,9 @@ def register():
         # hash user's password
         password = generate_password_hash(password)
 
-        # place user information data
+        # place user information data into database
         db.execute("INSERT INTO users (username, hash) VALUES (?,?)", username, password)
+        # if successful direct user to login page
         return render_template("login.html")
     else:
         return render_template("register.html")
@@ -442,18 +449,15 @@ def delete():
             error = "Exercise is not stored"
             return render_template("error.html", error=error, url=url)
 
-        # counter to stop infinite loop of page reloading
-        counter = 0
-
         # get category (i.e., equipment or muscle) to use so we can re-display the same table after the user deletes a row
         if "muscle" in request.form:
             muscle_display = request.form.get("muscle")
-            return render_template("browse.html", muscle_display=muscle_display, muscle=muscle, equipment=equipment, counter=counter, category_to_display=[])
+            return render_template("browse.html", muscle_display=muscle_display, muscle=muscle, equipment=equipment, category_to_display=[])
         elif "equipment" in request.form:
             equipment_display = request.form.get("equipment")
-            return render_template("browse.html", equipment_display=equipment_display, muscle=muscle, equipment=equipment, counter=counter, category_to_display=[])
+            return render_template("browse.html", equipment_display=equipment_display, muscle=muscle, equipment=equipment, category_to_display=[])
         else:
-            return render_template("browse.html", muscle=muscle, equipment=equipment, counter=counter, category_to_display=[])
+            return render_template("browse.html", muscle=muscle, equipment=equipment, category_to_display=[])
 
 
 

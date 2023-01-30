@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Browse
+    Customise workouts
 {% endblock %}
 
 {% block main %}
@@ -29,7 +29,7 @@
                 {% endfor %}
             </select> 
             <br>
-            <!-- auto-suggestion search -->
+            <!-- auto-suggestion search when typing in exercise name -->
             <input type="text" name="exercise_name" list="exercise-list" autocomplete="off" placeholder="Search for exercise">
                 <datalist id="exercise-list">
                     {% for i in all_exercises %}
@@ -41,16 +41,17 @@
             <input placeholder="measurement" name="measurement" type="text" autocomplete="off"><br>
             <input type="submit" value="Add to Workout"/>
         </form>
-        <!-- Button trigger modal -->
+        <!-- Button to trigger modal screen -->
         <button type="button" class="modal-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
             Click for Guidance
         </button>
     </div>
-    <!-- show table -->
+    <!-- Workout plan table -->
     <div>
         <table class="search_results" hidden="false" id="hiddenField">
             <thead>
                 <th> 
+                    <!-- button for ordering table alphabetically by exercise name -->
                     <button type="submit" id="order" title="Order" value="unordered">Exercise</button>
                 </th>
                 <th>Muscle</th>
@@ -76,7 +77,7 @@
                         </form>
                     </td>
                     <td>
-                        <!-- allow user to update weight number for exercise -->
+                    <!-- allow user to update weight number for exercise -->
                         <span>
                             <button type="submit" class="access_weight" data-toggle="tooltip" title="Click to change">{{i['weight']}}</button> 
                             <form action="/customise-workouts" method="post" class="alter_cell_value" style="display:none;">
@@ -86,7 +87,7 @@
                                 <input type="submit" value="ok">
                             </form>
                         </span>
-                        <!-- allow user to update weight measurement for exercise -->
+                    <!-- allow user to update weight measurement for exercise -->
                         <span>
                             <button type="submit" class="access_measurement" data-toggle="tooltip" title="Click to change">{{i['measurement']}}</button>
                             <form action="/customise-workouts" method="post" class="alter_cell_value" style="display:none;">
@@ -142,19 +143,6 @@
                 changeHeader("h2", 0, '{{ wk_choice }}');
                 // maintain workout name in input field for adding new exercises to workouts
                 changeOption('add_ex_to_wk', '{{ wk_choice }}');
-            </script>
-        {% endif %}
-        {% if keep %}
-            <script> 
-                // reload table with exercise addition if table not already in user view
-                changeHeader("h2", 0, '{{ wk_name_add }}');
-                changeOption('get_wk_name', '{{ wk_name_add }}');
-                submitForm("retrieve_wk");
-            </script>
-        {% endif %}
-        {% if users_wks %}
-            <!-- dynamically altering table -->
-            <script>
                 // user add exercise to workout plan
                 addRow('.add_exercise', '/customise-workouts', '#order_rows');
                 // order table by exercise name
@@ -165,6 +153,14 @@
                 alterTableRowCell('.access_reps', '/customise-workouts', "rep_number");
                 alterTableRowCell('.access_weight', '/customise-workouts', "weight_number");
                 alterTableRowCell('.access_measurement', '/customise-workouts', "measurement_update");
+            </script>
+        {% endif %}
+        {% if keep %}
+            <script> 
+                // update header to workout plan name
+                changeHeader("h2", 0, '{{ wk_name_add }}');
+                // maintain current workout plan name as select element value
+                changeOption('get_wk_name', '{{ wk_name_add }}');
             </script>
         {% endif %}
     </div>

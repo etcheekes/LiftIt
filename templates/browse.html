@@ -8,6 +8,7 @@
 
   
 <div class="container_brvp">
+  <!-- user input forms -->
   <div class="search_input sticky">
     <div class="div-min-width">
       <h2>Search Exercises</h2>
@@ -33,14 +34,16 @@
             </select>
             <input type="submit" value="Search">
         </form>
-        <!-- Button trigger modal -->
+        <!-- Button that triggers modal window -->
         <button type="button" class="modal-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
             Click for Guidance
         </button>
     </div>
   </div>
+  <!-- browse page table -->
   <table class="search_results" hidden="false" id="hiddenField">
     <thead>
+      <!-- button that orders table rows by exercise name alphabetically -->
       <th> 
         <button type="submit" id="order" title="Order" value="unordered">Exercise</button>
       </th>
@@ -82,7 +85,7 @@
             </div>
             <div class="modal-body">
                 <ul>
-                    <li>Search by exercise name, muscle worked, or equipment used</li>
+                    <li>Search by exercise name, muscle worked, or equipment used.</li>
                     <li>Click on the exercise title to order the table alphabetically by exercise name.</li>
                     <li>Click an exercise name to see demonstrations.</li>
                 </ul>                      
@@ -98,39 +101,14 @@
         <script>
           // show table once user submits search info
           showField();
-          // make exercise names link to google search
+          // make exercise names hyperlink to google search
           tblCellGoogleSearch('table', 1);
+          // allow user to order by clicking the Exercise <th> element
+          orderTable(0);
+          // allow dynamic deleting of rows
+          deleteRowFromTable('.delete_button', '/delete_exercise_from_database');
         </script>
       {% endif %}
-
-      <!-- make value for option tag the value the user chose upon page reload -->
-      {% if muscle_display and counter == 0 %}
-        <script>
-          // change select option name
-          changeOption('muscle_search', '{{ muscle_display }}');
-          // apply the select option change
-          submitForm("muscle_form");
-          // breaks infinite loop of reloading page
-          counter = counter + 1
-        </script>
-      {% elif equipment_display and counter == 0 %}
-        <script>
-          // change select option name
-          changeOption('equipment_search', '{{ equipment_display }}');
-          // apply the select option change
-          submitForm("equipment_form");
-          // breaks infinite loop of reloading page
-          counter = counter + 1;
-        </script>
-      {% endif %}
-      <!-- allow user to alphabetically order by exercise, changes are dynamic -->
-      <script>
-        // allow user to order by clicking the Exercise <th> element
-        orderTable(0);
-        // allow dynamic deleting of rows
-        deleteRowFromTable('.delete_button', '/delete_exercise_from_database');
-    
-    </script>
 </div>
 
 {% endblock %}
