@@ -1,4 +1,7 @@
 # LiftIt 
+
+Please see the current version of lift-it [here](https://github.com/etcheekes/liftit-django)
+
 #### Video Demo: https://www.youtube.com/watch?v=JCkquwHqHI0
 #### Description:
 
