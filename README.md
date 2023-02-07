@@ -1,6 +1,6 @@
 # LiftIt 
 
-Please see the current version of lift-it [here](https://github.com/etcheekes/liftit-django)
+Please see the current version of lift-it [here](https://github.com/etcheekes/Liftit_Django)
 
 #### Video Demo: https://www.youtube.com/watch?v=JCkquwHqHI0
 #### Description:
