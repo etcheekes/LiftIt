@@ -1,6 +1,6 @@
 # LiftIt 
 
-This version of Lift-It is not the current version nor is it deployed, please see the repository for the current version of lift-it [here](https://github.com/etcheekes/Liftit_Django) or try out the up-to-date app [here](https://lift-it.up.railway.app/home/)
+This version of Lift-It is not the current version nor is it deployed, please see the repository for the current version of lift-it [here](https://github.com/etcheekes/Liftit_Django) or try out the up-to-date app [here](https://lift-it.up.railway.app/home/).
 
 #### Video Demo: https://www.youtube.com/watch?v=JCkquwHqHI0
 
