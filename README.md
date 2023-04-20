@@ -1,8 +1,15 @@
 # LiftIt 
+
+
+This version of Lift-It is not the current version nor is it deployed, please see the repository for the current version of lift-it [here](https://github.com/etcheekes/Liftit_Django) or try out the up-to-date app [here] (https://lift-it.up.railway.app/home/)
+
 #### Video Demo: https://www.youtube.com/watch?v=JCkquwHqHI0
-#### Description:
+
+## Description:
 
 Lift-It is a dynamic workout planner web application that lets users browse exercises, make exercises, and create personal workout plans. The frontend uses HTML, CSS, and JavaScript while jinja was used to dynamically render pages. Each page is responsive and adapts to different screen sizes. The backend uses python and flask as its web application framework while SQLite is the database engine used. The website was developed on a virtual environment using Visual Studio Code as the IDE.
+
+### Frontend
 
 The frontend contains nine HTML files in the templates folder (I also discuss each page's functionality):
 
@@ -20,6 +27,8 @@ The frontend contains nine HTML files in the templates folder (I also discuss ea
 Other frontend files within the static folder are:
 - The styles.css file contains numerous CSS rules that style elements throughout the website. 
 - The main.js file contains several JavaScript functions that manipulate the DOM. These functions alter elements’ contents, reveal hidden elements, and submit forms. 
+
+### Backend
 
 Backend files include:
 
